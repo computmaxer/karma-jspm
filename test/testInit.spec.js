@@ -1,4 +1,5 @@
 var cwd = process.cwd();
+var path = require('path');
 var initJspm = require('../src/init');
 
 
@@ -30,12 +31,12 @@ describe('jspm plugin init', function(){
     });
 
     it('should add systemjs to the top of the files array', function(){
-        expect(files[1].pattern).toEqual(cwd + '/custom_packages/system@0.8.js');
+        expect(files[1].pattern).toEqual(cwd + '/custom_packages/system@*.js');
         expect(files[1].included).toEqual(true);
     });
 
     it('should add es6-module-loader to the top of the files array', function(){
-        expect(files[0].pattern).toEqual(cwd + '/custom_packages/es6-module-loader@0.8.js');
+        expect(files[0].pattern).toEqual(cwd + '/custom_packages/es6-module-loader@*.js');
         expect(files[0].included).toEqual(true);
     });
 
@@ -51,7 +52,7 @@ describe('jspm plugin init', function(){
     });
 
     it('should use the configured jspm_packages path and include it in the files array', function(){
-        expect(files[4].pattern).toEqual('./custom_packages/**/*');
+        expect(files[4].pattern).toEqual(path.resolve(cwd, './custom_packages/**/*'));
         expect(files[4].included).toEqual(false);
         expect(files[4].served).toEqual(true);
         expect(files[4].watched).toEqual(true);
