@@ -18,7 +18,7 @@ Include this plugin in your frameworks:
 frameworks: ['jspm', 'jasmine'],
 ```
 
-The `loadFiles` configuration tells karma-jspm which files should by dynamically loaded via systemjs *before* the tests run. Globs or regular file paths are acceptable. 
+The `loadFiles` configuration tells karma-jspm which files should be dynamically loaded via systemjs *before* the tests run. Globs or regular file paths are acceptable. 
 **You should not include these in the regular karma files array.** karma-jspm takes care of this for you.
 
 ```js

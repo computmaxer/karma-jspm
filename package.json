@@ -13,8 +13,14 @@
   },
   "author": {
     "name": "Max Peterson",
-    "email": "computmaxer@gmail.com"
+    "email": "maxwell.peterson@workiva.com"
   },
+  "contributors": [
+    {
+      "name": "Max Peterson",
+      "email": "computmaxer@gmail.com"
+    }
+  ],
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
