@@ -29,6 +29,14 @@ function expandGlob(file) {
   });
 };
 
+function resolveFileVersion(filename) {
+  var results = glob.sync(filename);
+  if(!results) {
+    throw new Error(filename + " not found!");
+  }
+  return results[0];
+};
+
 var createPattern = function(path) {
   return {pattern: path, included: true, served: true, watched: false};
 };
@@ -62,8 +70,8 @@ module.exports = function(files, basePath, jspm, client) {
   // Add SystemJS loader and jspm config
   files.unshift(createPattern(__dirname + '/adapter.js'));
   files.unshift(createPattern(configPath));
-  files.unshift(createPattern(packagesPath + 'system@0.8.js'));
-  files.unshift(createPattern(packagesPath + 'es6-module-loader@0.8.js'));
+  files.unshift(createPattern(resolveFileVersion(packagesPath + 'system@*.js')));
+  files.unshift(createPattern(resolveFileVersion(packagesPath + 'es6-module-loader@*.js')));
 
   // Loop through all of jspm.load_files and do two things
   // 1. Add all the files as "served" files to the files array
