@@ -1,0 +1,36 @@
+{
+  "name": "karma-jspm",
+  "version": "0.0.7",
+  "description": "Include jspm module loader for karma runs; allows dynamic loading of src and test files and modules",
+  "main": "index.js",
+  "keywords": [
+    "karma-plugin",
+    "karma-adapter",
+    "jspm"
+  ],
+  "scripts": {
+    "test": "gulp test"
+  },
+  "author": {
+    "name": "Max Peterson",
+    "email": "maxwell.peterson@workiva.com"
+  },
+  "contributors": [
+    {
+      "name": "Max Peterson",
+      "email": "computmaxer@gmail.com"
+    }
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Workiva/karma-jspm.git"
+  },
+  "dependencies": {
+    "glob": "~3.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.7",
+    "gulp-jasmine": "^1.0.0"
+  }
+}
