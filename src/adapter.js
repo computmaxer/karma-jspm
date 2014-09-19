@@ -24,6 +24,13 @@
     }
 
     var promises = [];
+
+    if(!System){
+        throw new Error("SystemJS was not found. Please make sure you have " +
+                        "initialized jspm via installing a dependency with jspm, " +
+                        "or by running 'jspm dl-loader'.");
+    }
+
     karma.config.jspm.expandedFiles.map(function(modulePath){
         // Prepend base to each path. Karma serves files from /base/
         promises.push(System.import('base/' + extractModuleName(modulePath)));
