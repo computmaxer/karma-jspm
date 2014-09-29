@@ -30,14 +30,6 @@ jspm: {
 }
 ```
 
-The proxy configuration tells Karma to rewrite the requests for `/jspm_packages/...` to `/base/jspm_packages/...` so that karma knows how to serve the files that jspm/systemjs will try to load.
-
-```js
-proxies: {
-    '/jspm_packages/': '/base/jspm_packages/'
-}
-```
-
 That's it!
 
 
