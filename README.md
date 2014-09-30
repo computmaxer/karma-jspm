@@ -30,14 +30,6 @@ jspm: {
 }
 ```
 
-The proxy configuration tells Karma to rewrite the requests for `/jspm_packages/...` to `/base/jspm_packages/...` so that karma knows how to serve the files that jspm/systemjs will try to load.
-
-```js
-proxies: {
-    '/jspm_packages/': '/base/jspm_packages/'
-}
-```
-
 That's it!
 
 
@@ -60,26 +52,4 @@ jspm: {
     loadFiles: ['test/**/*.js'],
     serveFiles: ['src/**/*.js']
 }
-```
-
-###Dealing with Bundles###
-
-Currently the best way to test with jspm bundles is to output them into a directory that you can proxy to. You could output them into `jspm_packages` since you've already created a proxy configuration for that directory.
-While this would work, it may not be the cleanest approach.
-
-Consider creating a `bundles` directory and modifying your proxy configuration as such:
-
-```js
-proxies: {
-    '/jspm_packages/': '/base/jspm_packages/',
-    '/bundles/': '/base/bundles/'
-}
-```
-
-You will also need to add a pattern like `bundles/**/*.js` to either `loadFiles` or `serveFiles`.
-
-Then your jspm bundle command would need to look something like this:
-
-```bash
-jspm bundle some_package bundles/package.js --inject
 ```

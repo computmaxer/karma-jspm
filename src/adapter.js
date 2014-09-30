@@ -31,9 +31,14 @@
                         "or by running 'jspm dl-loader'.");
     }
 
+    // Configure SystemJS baseURL
+    System.config({
+        baseURL: 'base'
+    });
+
+    // Load everything specified in loadFiles
     karma.config.jspm.expandedFiles.map(function(modulePath){
-        // Prepend base to each path. Karma serves files from /base/
-        promises.push(System.import('base/' + extractModuleName(modulePath)));
+        promises.push(System.import(extractModuleName(modulePath)));
     });
 
     // Promise comes from the es6_module_loader
