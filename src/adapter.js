@@ -38,7 +38,13 @@
 
     // Load everything specified in loadFiles
     karma.config.jspm.expandedFiles.map(function(modulePath){
-        promises.push(System.import(extractModuleName(modulePath)));
+        var promise = System.import(extractModuleName(modulePath))
+            .catch(function(e){
+                setTimeout(function() {
+                    throw e;
+                });
+            });
+        promises.push(promise);
     });
 
     // Promise comes from the es6_module_loader
