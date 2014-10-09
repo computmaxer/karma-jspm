@@ -62,8 +62,8 @@ module.exports = function(files, basePath, jspm, client) {
   // Add SystemJS loader and jspm config
   files.unshift(createPattern(__dirname + '/adapter.js'));
   files.unshift(createPattern(configPath));
-  files.unshift(createPattern(packagesPath + 'system@*.js'));
-  files.unshift(createPattern(packagesPath + 'es6-module-loader@*.js'));
+  files.unshift(createPattern(packagesPath + 'system.js'));
+  files.unshift(createPattern(packagesPath + 'es6-module-loader.js'));
 
   // Loop through all of jspm.load_files and do two things
   // 1. Add all the files as "served" files to the files array
