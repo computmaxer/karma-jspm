@@ -37,7 +37,8 @@
     });
 
     // Load everything specified in loadFiles
-    karma.config.jspm.expandedFiles.map(function(modulePath){
+    for (var i = 0; i < karma.config.jspm.expandedFiles.length; i++) {
+        var modulePath = karma.config.jspm.expandedFiles[i];
         var promise = System.import(extractModuleName(modulePath))
             .catch(function(e){
                 setTimeout(function() {
@@ -45,7 +46,7 @@
                 });
             });
         promises.push(promise);
-    });
+    }
 
     // Promise comes from the es6_module_loader
     Promise.all(promises).then(function(){
