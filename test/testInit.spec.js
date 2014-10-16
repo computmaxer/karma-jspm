@@ -31,12 +31,12 @@ describe('jspm plugin init', function(){
     });
 
     it('should add systemjs to the top of the files array', function(){
-        expect(files[1].pattern).toEqual(cwd + '/custom_packages/system@*.js');
+        expect(files[1].pattern).toEqual(cwd + '/custom_packages/system.js');
         expect(files[1].included).toEqual(true);
     });
 
     it('should add es6-module-loader to the top of the files array', function(){
-        expect(files[0].pattern).toEqual(cwd + '/custom_packages/es6-module-loader@*.js');
+        expect(files[0].pattern).toEqual(cwd + '/custom_packages/es6-module-loader.js');
         expect(files[0].included).toEqual(true);
     });
 
