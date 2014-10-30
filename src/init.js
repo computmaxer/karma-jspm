@@ -52,6 +52,9 @@ module.exports = function(files, basePath, jspm, client) {
   if(!client.jspm)
     client.jspm = {};
 
+  // Pass on useBundles option to client
+  client.jspm.useBundles = jspm.useBundles;
+
   packagesPath = path.normalize(cwd + '/' + jspm.packages + '/');
   configPath = path.normalize(cwd + '/' + jspm.config);
 
