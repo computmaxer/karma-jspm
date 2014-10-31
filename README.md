@@ -53,3 +53,10 @@ jspm: {
     serveFiles: ['src/**/*.js']
 }
 ```
+
+By default karma-jspm ignores jspm's bundles configuration. To re-enable it, specify the `useBundles` option.
+
+```js
+jspm: {
+    useBundles: true
+}

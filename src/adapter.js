@@ -36,6 +36,13 @@
         baseURL: 'base'
     });
 
+    // Exclude bundle configurations if useBundles option is not specified
+    if(!karma.config.jspm.useBundles){
+        System.config({
+            bundles: []
+        });
+    }
+
     // Load everything specified in loadFiles
     for (var i = 0; i < karma.config.jspm.expandedFiles.length; i++) {
         var modulePath = karma.config.jspm.expandedFiles[i];
