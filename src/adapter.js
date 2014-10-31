@@ -37,7 +37,6 @@
     });
 
     // Exclude bundle configurations if useBundles option is not specified
-    console.log(karma.config);
     if(!karma.config.jspm.useBundles){
         System.config({
             bundles: []
