@@ -17,6 +17,7 @@
 var cwd = process.cwd();
 var glob = require("glob");
 var path = require("path");
+var fs = require("fs");
 
 
 function flatten(structure) {
@@ -37,18 +38,40 @@ var createServedPattern = function(path){
   return {pattern: path, included: false, served: true, watched: true};
 };
 
+function getJspmPackageJson(dir) {
+  var pjson = {};
+  try {
+    pjson = JSON.parse(fs.readFileSync(path.resolve(dir, 'package.json')));
+  }
+  catch(e) {
+    pjson = {};
+  }
+  if (pjson.jspm) {
+    for (var p in pjson.jspm)
+      pjson[p] = pjson.jspm[p];
+  }
+  pjson.directories = pjson.directories || {};
+  if (pjson.directories.baseURL) {
+    if (!pjson.directories.packages)
+      pjson.directories.packages = path.join(pjson.directories.baseURL, 'jspm_packages');
+    if (!pjson.configFile)
+      pjson.configFile = path.join(pjson.directories.baseURL, 'config.js');
+  }
+  return pjson;
+}
+
 module.exports = function(files, basePath, jspm, client) {
   // Initialize jspm config if it wasn't specified in karma.conf.js
   if(!jspm)
     jspm = {};
   if(!jspm.config)
-    jspm.config = "config.js";
+    jspm.config = getJspmPackageJson(cwd).configFile || "config.js";
   if(!jspm.loadFiles)
     jspm.loadFiles = [];
   if(!jspm.serveFiles)
     jspm.serveFiles = [];
   if(!jspm.packages)
-    jspm.packages = "jspm_packages/";
+    jspm.packages = getJspmPackageJson(cwd).directories.packages || "jspm_packages/";
   if(!client.jspm)
     client.jspm = {};
 
