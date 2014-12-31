@@ -26,9 +26,6 @@ function flatten(structure) {
 
 function expandGlob(file) {
   return glob.sync(file.pattern || file);
-  //.map(function (filePath) {
-  //  return filePath.replace(/\//g, path.sep);
-  //});
 };
 
 var createPattern = function(path) {
