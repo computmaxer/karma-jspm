@@ -76,8 +76,8 @@ module.exports = function(files, basePath, jspm, client) {
   // Pass on useBundles option to client
   client.jspm.useBundles = jspm.useBundles;
 
-  packagesPath = path.normalize(cwd + '/' + jspm.packages + '/');
-  configPath = path.normalize(cwd + '/' + jspm.config);
+  var packagesPath = path.normalize(cwd + '/' + jspm.packages + '/');
+  var configPath = path.normalize(cwd + '/' + jspm.config);
 
   // Allow Karma to serve all files within jspm_packages.
   // This allows jspm/SystemJS to load them
