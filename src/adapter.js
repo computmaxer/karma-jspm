@@ -50,10 +50,6 @@
         });
     }
 
-    if(typeof karma.config.jspm.paths === 'object') {
-
-    }
-
     // Load everything specified in loadFiles
     for (var i = 0; i < karma.config.jspm.expandedFiles.length; i++) {
         var modulePath = karma.config.jspm.expandedFiles[i];
