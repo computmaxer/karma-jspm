@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-var cwd = process.cwd();
 var glob = require("glob");
 var path = require("path");
 var fs = require("fs");
@@ -24,8 +23,8 @@ function flatten(structure) {
   return [].concat.apply([], structure);
 }
 
-function expandGlob(file) {
-  return glob.sync(file.pattern || file);
+function expandGlob(file, cwd) {
+  return glob.sync(file.pattern || file, {cwd: cwd});
 };
 
 var createPattern = function(path) {
@@ -63,21 +62,21 @@ module.exports = function(files, basePath, jspm, client) {
   if(!jspm)
     jspm = {};
   if(!jspm.config)
-    jspm.config = getJspmPackageJson(cwd).configFile || "config.js";
+    jspm.config = getJspmPackageJson(basePath).configFile || "config.js";
   if(!jspm.loadFiles)
     jspm.loadFiles = [];
   if(!jspm.serveFiles)
     jspm.serveFiles = [];
   if(!jspm.packages)
-    jspm.packages = getJspmPackageJson(cwd).directories.packages || "jspm_packages/";
+    jspm.packages = getJspmPackageJson(basePath).directories.packages || "jspm_packages/";
   if(!client.jspm)
     client.jspm = {};
 
   // Pass on useBundles option to client
   client.jspm.useBundles = jspm.useBundles;
 
-  var packagesPath = path.normalize(cwd + '/' + jspm.packages + '/');
-  var configPath = path.normalize(cwd + '/' + jspm.config);
+  var packagesPath = path.normalize(basePath + '/' + jspm.packages + '/');
+  var configPath = path.normalize(basePath + '/' + jspm.config);
 
   // Allow Karma to serve all files within jspm_packages.
   // This allows jspm/SystemJS to load them
@@ -99,15 +98,15 @@ module.exports = function(files, basePath, jspm, client) {
 
   // Loop through all of jspm.load_files and do two things
   // 1. Add all the files as "served" files to the files array
-  // 2. Expand out and globs to end up with actual files for jspm to load. 
+  // 2. Expand out and globs to end up with actual files for jspm to load.
   //    Store that in client.jspm.expandedFiles
   client.jspm.expandedFiles = flatten(jspm.loadFiles.map(function(file){
-    files.push(createServedPattern(cwd + "/" + (file.pattern || file)));
-    return expandGlob(file);
+    files.push(createServedPattern(basePath + "/" + (file.pattern || file)));
+    return expandGlob(file, basePath);
   }));
 
   // Add served files to files array
   jspm.serveFiles.map(function(file){
-    files.push(createServedPattern(cwd + "/" + (file.pattern || file)));
+    files.push(createServedPattern(basePath + "/" + (file.pattern || file)));
   });
 };
