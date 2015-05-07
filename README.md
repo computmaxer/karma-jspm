@@ -60,3 +60,16 @@ By default karma-jspm ignores jspm's bundles configuration. To re-enable it, spe
 jspm: {
     useBundles: true
 }
+```
+
+Depending on your framework and project structure it might be necessary to override jspm paths for the testing scenario.
+In order to do so just add the `paths` property to the jspm config object in your karma-configuration file, along with the overrides:
+ 
+```js
+jspm: {
+    paths: {
+        '*': 'yourpath/*.js',
+        ...
+    }
+}
+``` 

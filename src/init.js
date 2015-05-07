@@ -71,6 +71,8 @@ module.exports = function(files, basePath, jspm, client) {
     jspm.packages = getJspmPackageJson(basePath).directories.packages || "jspm_packages/";
   if(!client.jspm)
     client.jspm = {};
+  if(jspm.paths !== undefined && typeof jspm.paths === 'object')
+    client.jspm.paths = jspm.paths;
 
   // Pass on useBundles option to client
   client.jspm.useBundles = jspm.useBundles;

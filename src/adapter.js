@@ -36,6 +36,13 @@
         baseURL: 'base'
     });
 
+    if(karma.config.jspm.paths !== undefined &&
+        typeof karma.config.jspm.paths === 'object') {
+        System.config({
+            paths: karma.config.jspm.paths
+        });
+    }
+
     // Exclude bundle configurations if useBundles option is not specified
     if(!karma.config.jspm.useBundles){
         System.config({
