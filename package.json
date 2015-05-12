@@ -24,7 +24,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ggranum/karma-jspm.git"
+    "url": "git@github.com:Workiva/karma-jspm.git"
   },
   "dependencies": {
     "glob": "~3.2"
