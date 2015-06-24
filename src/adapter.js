@@ -15,9 +15,27 @@
  */
 
 (function(karma, System) {
+    System.config({ baseURL: 'base' });
 
     // Prevent immediately starting tests.
-    window.__karma__.loaded = function() {};
+    window.__karma__.loaded = function() {
+        // Load everything specified in loadFiles
+        for (var i = 0; i < karma.config.jspm.expandedFiles.length; i++) {
+            var modulePath = karma.config.jspm.expandedFiles[i];
+            var promise = System['import'](extractModuleName(modulePath))
+                ['catch'](function(e){
+                    setTimeout(function() {
+                        throw e;
+                    });
+                });
+            promises.push(promise);
+        }
+
+        // Promise comes from the es6_module_loader
+        Promise.all(promises).then(function(){
+            karma.start();
+        });
+    };
 
     function extractModuleName(fileName){
         return fileName.replace(/\.js$/, "");
@@ -49,22 +67,4 @@
             bundles: []
         });
     }
-
-    // Load everything specified in loadFiles
-    for (var i = 0; i < karma.config.jspm.expandedFiles.length; i++) {
-        var modulePath = karma.config.jspm.expandedFiles[i];
-        var promise = System['import'](extractModuleName(modulePath))
-            ['catch'](function(e){
-                setTimeout(function() {
-                    throw e;
-                });
-            });
-        promises.push(promise);
-    }
-
-    // Promise comes from the es6_module_loader
-    Promise.all(promises).then(function(){
-        karma.start();
-    });
-
 })(window.__karma__, window.System);
