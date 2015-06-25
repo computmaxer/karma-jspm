@@ -49,11 +49,6 @@
                         "or by running 'jspm dl-loader'.");
     }
 
-    // Configure SystemJS baseURL
-    System.config({
-        baseURL: 'base'
-    });
-
     if(karma.config.jspm.paths !== undefined &&
         typeof karma.config.jspm.paths === 'object') {
         System.config({
