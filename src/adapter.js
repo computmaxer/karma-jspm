@@ -31,7 +31,7 @@
             promises.push(promise);
         }
 
-        // Promise comes from the es6_module_loader
+        // Promise comes from the systemjs polyfills
         Promise.all(promises).then(function(){
             karma.start();
         });
