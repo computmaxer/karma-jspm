@@ -76,7 +76,7 @@ module.exports = function(files, basePath, jspm, client) {
 
   // Pass on useBundles option to client
   client.jspm.useBundles = jspm.useBundles;
-
+  
   var packagesPath = path.normalize(basePath + '/' + jspm.packages + '/');
   var configPath = path.normalize(basePath + '/' + jspm.config);
 
@@ -93,10 +93,10 @@ module.exports = function(files, basePath, jspm, client) {
       return packagesPath + fileName + '.js';
     }
   }
-  files.unshift(createPattern(configPath));
+  
   files.unshift(createPattern(__dirname + '/adapter.js'));
   files.unshift(createPattern(getLoaderPath('system-polyfills.src')));
-  files.unshift(createPattern(getLoaderPath('system.src')));
+  files.unshift(createPattern(getLoaderPath('system.src')));  
 
   // Loop through all of jspm.load_files and do two things
   // 1. Add all the files as "served" files to the files array
@@ -106,6 +106,9 @@ module.exports = function(files, basePath, jspm, client) {
     files.push(createServedPattern(basePath + "/" + (file.pattern || file)));
     return expandGlob(file, basePath);
   }));
+
+  // Inject the jspm config for later evaluation
+  client.jspm.config = fs.readFileSync(configPath).toString();
 
   // Add served files to files array
   jspm.serveFiles.map(function(file){
