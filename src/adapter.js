@@ -14,8 +14,18 @@
  * limitations under the License.
  */
 
-(function(karma, System) {
-    System.config({ baseURL: 'base' });
+function configureSystem(config) {
+    var baseURLPattern = /(["']baseURL["']:.*["'])(.*)(["'])/;
+
+    // Fix baseURL path, by injecting base instead of the current value from config.js
+    var jspmConfig = config.replace(baseURLPattern, '$1base$3');
+    
+    // Evel the config
+    eval(jspmConfig); 
+}
+
+(function(karma, System) {    
+    configureSystem(karma.config.jspm.config);
 
     // Prevent immediately starting tests.
     window.__karma__.loaded = function() {
