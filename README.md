@@ -6,7 +6,7 @@ karma-jspm includes the jspm module loader for karma runs. This allows dynamic l
 
 Available in npm: `npm install karma-jspm`
 
-**This plugin assumes you are using jspm in your project.** You will need to have a `config.js` in the root of your project (though this is configurable) as well as a `jspm_packages` directory containing systemjs and the es6-module-loader.
+**This plugin assumes you are using jspm in your project.** You will need to have a `config.js` in the root of your project (though this is configurable) as well as a `jspm_packages` directory containing systemjs.
 
 ##Configuration##
 
