@@ -20,23 +20,23 @@ describe('jspm plugin init', function(){
         initJspm(files, basePath, jspm, client);
     });
 
-    it('should add adapter.js to the top of the files array', function(){
-        expect(files[3].pattern).toEqual(basePath + '/src/adapter.js');
+    it('should add config.js to the top of the files array', function(){
+        expect(files[3].pattern).toEqual(basePath + '/custom_config.js');
         expect(files[3].included).toEqual(true);
     });
 
-    it('should add config.js to the top of the files array', function(){
-        expect(files[2].pattern).toEqual(basePath + '/custom_config.js');
+    it('should add adapter.js to the top of the files array', function(){
+        expect(files[2].pattern).toEqual(basePath + '/src/adapter.js');
         expect(files[2].included).toEqual(true);
     });
 
-    it('should add systemjs to the top of the files array', function(){
-        expect(files[1].pattern).toEqual(basePath + '/custom_packages/system.js');
+    it('should add systemjs-polyfills to the top of the files array', function(){
+        expect(files[1].pattern).toEqual(basePath + '/custom_packages/system-polyfills.src.js');
         expect(files[1].included).toEqual(true);
     });
 
-    it('should add es6-module-loader to the top of the files array', function(){
-        expect(files[0].pattern).toEqual(basePath + '/custom_packages/es6-module-loader.js');
+    it('should add systemjs to the top of the files array', function(){
+        expect(files[0].pattern).toEqual(basePath + '/custom_packages/system.src.js');
         expect(files[0].included).toEqual(true);
     });
 

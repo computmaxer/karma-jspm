@@ -18,6 +18,12 @@ Include this plugin in your frameworks:
 frameworks: ['jspm', 'jasmine'],
 ```
 
+Karma auto loads plugins unless you specify a plugins config. If you have one, you'll also need to add it there:
+
+```js
+plugins: ['karma-jspm', 'karma-phantomjs-launcher'],
+```
+
 The `loadFiles` configuration tells karma-jspm which files should be dynamically loaded via systemjs *before* the tests run. Globs or regular file paths are acceptable. 
 
 
