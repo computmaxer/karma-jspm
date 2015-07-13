@@ -55,7 +55,7 @@ describe('jspm plugin init', function(){
         expect(files[4].pattern).toEqual(path.resolve(cwd, './custom_packages/**/*'));
         expect(files[4].included).toEqual(false);
         expect(files[4].served).toEqual(true);
-        expect(files[4].watched).toEqual(true);
+        expect(files[4].watched).toEqual(false); 
     });
 
 });
