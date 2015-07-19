@@ -51,10 +51,10 @@ describe('jspm plugin init', function(){
     });
 
     it('should use the configured jspm_packages path and include it in the files array', function(){
-        expect(files[4].pattern).toEqual(path.resolve(cwd, './custom_packages/**/*'));
-        expect(files[4].included).toEqual(false);
-        expect(files[4].served).toEqual(true);
-        expect(files[4].watched).toEqual(true);
+        expect(files[3].pattern).toEqual(path.resolve(cwd, './custom_packages/**/*'));
+        expect(files[3].included).toEqual(false);
+        expect(files[3].served).toEqual(true);
+        expect(files[3].watched).toEqual(true);
     });
 
 });
