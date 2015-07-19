@@ -58,7 +58,6 @@ function getJspmPackageJson(dir) {
 }
 
 module.exports = function(files, basePath, jspm, client) {
-  console.log(getJspmPackageJson(basePath).directories.packages);
   // Initialize jspm config if it wasn't specified in karma.conf.js
   if(!jspm)
     jspm = {};
