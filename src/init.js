@@ -108,7 +108,13 @@ module.exports = function(files, basePath, jspm, client) {
   }));
 
   // Inject the jspm config for later evaluation
-  client.jspm.config = fs.readFileSync(configPath).toString();
+  if (fs.existsSync(configPath)) {
+    client.jspm.config = fs.readFileSync(configPath).toString();
+  } else {
+    client.jspm.config = {
+        baseURL: 'base'
+    };
+  }
 
   // Add served files to files array
   jspm.serveFiles.map(function(file){
