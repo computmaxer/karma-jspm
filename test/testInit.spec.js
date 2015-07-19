@@ -20,9 +20,8 @@ describe('jspm plugin init', function(){
         initJspm(files, basePath, jspm, client);
     });
 
-    it('should add config.js to the top of the files array', function(){
-        expect(files[3].pattern).toEqual(basePath + '/custom_config.js');
-        expect(files[3].included).toEqual(true);
+    it('should add inject the config for later evaluation', function(){
+        expect(client.jspm.config).not.toBe(false);
     });
 
     it('should add adapter.js to the top of the files array', function(){
