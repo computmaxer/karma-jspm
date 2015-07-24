@@ -38,7 +38,8 @@
     };
 
     function extractModuleName(fileName){
-        return fileName.replace(/\.js$/, "");
+        return fileName.match(/.ts$/) ?
+            fileName.concat('!') : fileName.replace(/\.js$/, '');
     }
 
     var promises = [];
