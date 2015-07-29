@@ -24,9 +24,7 @@
             var modulePath = karma.config.jspm.expandedFiles[i];
             var promise = System['import'](extractModuleName(modulePath))
                 ['catch'](function(e){
-                    setTimeout(function() {
-                        throw e;
-                    });
+                    throw e;
                 });
             promises.push(promise);
         }
