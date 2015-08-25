@@ -15,7 +15,15 @@
  */
 
 (function(karma, System) {
+    if (!System) {
+        throw new Error("SystemJS was not found. Please make sure you have " +
+            "initialized jspm via installing a dependency with jspm, " +
+            "or by running 'jspm dl-loader'.");
+    }
+
     System.config({ baseURL: 'base' });
+
+    var promises = [];
 
     // Prevent immediately starting tests.
     window.__karma__.loaded = function() {
@@ -36,27 +44,19 @@
         for (var i = 0; i < karma.config.jspm.expandedFiles.length; i++) {
             var modulePath = karma.config.jspm.expandedFiles[i];
             var promise = System['import'](extractModuleName(modulePath))
-                ['catch'](function(e){
+                ['catch'](function(e) {
                     throw e;
                 });
             promises.push(promise);
         }
 
         // Promise comes from the systemjs polyfills
-        Promise.all(promises).then(function(){
+        Promise.all(promises).then(function() {
             karma.start();
         });
     };
 
-    function extractModuleName(fileName){
+    function extractModuleName(fileName) {
         return fileName.replace(/\.js$/, "");
-    }
-
-    var promises = [];
-
-    if(!System){
-        throw new Error("SystemJS was not found. Please make sure you have " +
-                        "initialized jspm via installing a dependency with jspm, " +
-                        "or by running 'jspm dl-loader'.");
     }
 })(window.__karma__, window.System);
