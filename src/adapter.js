@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/*global window*/
+
 (function(karma, System) {
     if (!System) {
         throw new Error('SystemJS was not found. Please make sure you have ' +
