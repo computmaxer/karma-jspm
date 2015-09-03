@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-var glob = require("glob");
-var path = require("path");
-var fs = require("fs");
+var glob = require('glob');
+var path = require('path');
+var fs = require('fs');
 
 
 function flatten(structure) {
@@ -62,13 +62,13 @@ module.exports = function(files, basePath, jspm, client) {
   if(!jspm)
     jspm = {};
   if(!jspm.config)
-    jspm.config = getJspmPackageJson(basePath).configFile || "config.js";
+    jspm.config = getJspmPackageJson(basePath).configFile || 'config.js';
   if(!jspm.loadFiles)
     jspm.loadFiles = [];
   if(!jspm.serveFiles)
     jspm.serveFiles = [];
   if(!jspm.packages)
-    jspm.packages = getJspmPackageJson(basePath).directories.packages || "jspm_packages/";
+    jspm.packages = getJspmPackageJson(basePath).directories.packages || 'jspm_packages/';
   if(!client.jspm)
     client.jspm = {};
   if(jspm.paths !== undefined && typeof jspm.paths === 'object')
@@ -101,16 +101,16 @@ module.exports = function(files, basePath, jspm, client) {
   files.unshift(createPattern(getLoaderPath('system.src')));
 
   // Loop through all of jspm.load_files and do two things
-  // 1. Add all the files as "served" files to the files array
+  // 1. Add all the files as 'served' files to the files array
   // 2. Expand out and globs to end up with actual files for jspm to load.
   //    Store that in client.jspm.expandedFiles
   client.jspm.expandedFiles = flatten(jspm.loadFiles.map(function(file){
-    files.push(createServedPattern(basePath + "/" + (file.pattern || file)));
+    files.push(createServedPattern(basePath + '/' + (file.pattern || file)));
     return expandGlob(file, basePath);
   }));
 
   // Add served files to files array
   jspm.serveFiles.map(function(file){
-    files.push(createServedPattern(basePath + "/" + (file.pattern || file)));
+    files.push(createServedPattern(basePath + '/' + (file.pattern || file)));
   });
 };

@@ -16,9 +16,9 @@
 
 (function(karma, System) {
     if (!System) {
-        throw new Error("SystemJS was not found. Please make sure you have " +
-            "initialized jspm via installing a dependency with jspm, " +
-            "or by running 'jspm dl-loader'.");
+        throw new Error('SystemJS was not found. Please make sure you have ' +
+            'initialized jspm via installing a dependency with jspm, ' +
+            'or by running \'jspm dl-loader\'.');
     }
 
     System.config({ baseURL: 'base' });
@@ -57,6 +57,6 @@
     };
 
     function extractModuleName(fileName) {
-        return fileName.replace(/\.js$/, "");
+        return fileName.replace(/\.js$/, '');
     }
 })(window.__karma__, window.System);
