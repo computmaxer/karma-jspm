@@ -25,7 +25,7 @@ function flatten(structure) {
 
 function expandGlob(file, cwd) {
   return glob.sync(file.pattern || file, {cwd: cwd});
-};
+}
 
 var createPattern = function(path) {
   return {pattern: path, included: true, served: true, watched: false};
