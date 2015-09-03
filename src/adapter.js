@@ -29,8 +29,6 @@
     // Prevent immediately starting tests.
     karma.loaded = function() {
 
-        console.log('loaded', JSON.stringify(karma.config));
-
         if(karma.config.jspm.paths !== undefined &&
             typeof karma.config.jspm.paths === 'object') {
             System.config({
@@ -55,7 +53,6 @@
 
         // Promise comes from the systemjs polyfills
         Promise.all(promises).then(function() {
-            console.log('promise', promises);
             karma.start();
         });
     };
