@@ -74,8 +74,9 @@ module.exports = function(files, basePath, jspm, client) {
   if(jspm.paths !== undefined && typeof jspm.paths === 'object')
     client.jspm.paths = jspm.paths;
 
-  // Pass on useBundles option to client
+  // Pass on options to client
   client.jspm.useBundles = jspm.useBundles;
+  client.jspm.stripExtension = jspm.stripExtension;
 
   var packagesPath = path.normalize(basePath + '/' + jspm.packages + '/');
   var configPath = path.normalize(basePath + '/' + jspm.config);
