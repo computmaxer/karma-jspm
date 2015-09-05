@@ -17,49 +17,49 @@
 /*global window*/
 
 (function(karma, System) {
-  if (!System) {
-    throw new Error('SystemJS was not found. Please make sure you have ' +
-      'initialized jspm via installing a dependency with jspm, ' +
-      'or by running \'jspm dl-loader\'.');
-  }
-
-  System.config({ baseURL: 'base' });
-
-  var promises = [];
-
-  // Prevent immediately starting tests.
-  window.__karma__.loaded = function() {
-
-    if(karma.config.jspm.paths !== undefined &&
-      typeof karma.config.jspm.paths === 'object') {
-
-      System.config({
-        paths: karma.config.jspm.paths
-      });
+    if (!System) {
+        throw new Error('SystemJS was not found. Please make sure you have ' +
+            'initialized jspm via installing a dependency with jspm, ' +
+            'or by running \'jspm dl-loader\'.');
     }
 
-    // Exclude bundle configurations if useBundles option is not specified
-    if(!karma.config.jspm.useBundles){
-      System.bundles = [];
-    }
+    System.config({ baseURL: 'base' });
 
-    // Load everything specified in loadFiles
-    for (var i = 0; i < karma.config.jspm.expandedFiles.length; i++) {
-      var modulePath = karma.config.jspm.expandedFiles[i];
-      var promise = System['import'](extractModuleName(modulePath))
-        ['catch'](function(e) {
-          throw e;
+    var promises = [];
+
+    // Prevent immediately starting tests.
+    window.__karma__.loaded = function() {
+
+        if(karma.config.jspm.paths !== undefined &&
+            typeof karma.config.jspm.paths === 'object') {
+
+            System.config({
+                paths: karma.config.jspm.paths
+            });
+        }
+
+        // Exclude bundle configurations if useBundles option is not specified
+        if(!karma.config.jspm.useBundles){
+            System.bundles = [];
+        }
+
+        // Load everything specified in loadFiles
+        for (var i = 0; i < karma.config.jspm.expandedFiles.length; i++) {
+            var modulePath = karma.config.jspm.expandedFiles[i];
+            var promise = System['import'](extractModuleName(modulePath))
+              ['catch'](function(e) {
+                throw e;
+            });
+            promises.push(promise);
+        }
+
+        // Promise comes from the systemjs polyfills
+        Promise.all(promises).then(function() {
+            karma.start();
         });
-      promises.push(promise);
+    };
+
+    function extractModuleName(fileName) {
+        return fileName.replace(/\.js$/, '');
     }
-
-    // Promise comes from the systemjs polyfills
-    Promise.all(promises).then(function() {
-      karma.start();
-    });
-  };
-
-  function extractModuleName(fileName) {
-    return fileName.replace(/\.js$/, '');
-  }
 })(window.__karma__, window.System);
