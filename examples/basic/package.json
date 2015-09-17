@@ -1,13 +1,19 @@
 {
-  "name": "single-tree",
+  "name": "basic",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Basic example with sources and tests separated",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "karma start"
   },
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "Peter Onneby",
+    "email": "peter@onneby.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Workiva/karma-jspm.git"
+  },
+  "license": "Apache-2.0",
   "devDependencies": {
     "jasmine": "^2.3.2",
     "jasmine-core": "^2.3.4",

@@ -2,12 +2,14 @@ Basic example with sources and tests separated.
 
 Install
 ===
-
-jspm install
-
+```
 npm install
-
+```
+```
+jspm install
+```
 Run test
 ===
-
-karma start
+```
+npm run test
+```
