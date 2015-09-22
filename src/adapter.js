@@ -25,10 +25,11 @@
 
     System.config({ baseURL: 'base' });
 
-    var promises = [];
+    var promises = [],
+      stripExtension = typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true;
 
     // Prevent immediately starting tests.
-    window.__karma__.loaded = function() {
+    karma.loaded = function() {
 
         if(karma.config.jspm.paths !== undefined &&
             typeof karma.config.jspm.paths === 'object') {
@@ -60,6 +61,9 @@
     };
 
     function extractModuleName(fileName) {
-        return fileName.replace(/\.js$/, '');
+        if (stripExtension) {
+            return fileName.replace(/\.js$/, '');
+        }
+        return fileName;
     }
 })(window.__karma__, window.System);
