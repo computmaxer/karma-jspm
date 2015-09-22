@@ -26,7 +26,7 @@
     System.config({ baseURL: 'base' });
 
     var promises = [],
-      stripExtension = typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true;
+        stripExtension = typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true;
 
     // Prevent immediately starting tests.
     karma.loaded = function() {

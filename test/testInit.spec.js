@@ -1,3 +1,5 @@
+/*global describe, expect, it, beforeEach*/
+
 var cwd = process.cwd();
 var path = require('path');
 var initJspm = require('../src/init');

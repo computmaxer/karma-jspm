@@ -24,7 +24,7 @@ function flatten(structure) {
 }
 
 function expandGlob(file, cwd) {
-  return glob.sync(file.pattern || file, {cwd: cwd});
+    return glob.sync(file.pattern || file, {cwd: cwd});
 }
 
 var createPattern = function(path) {
@@ -74,9 +74,9 @@ module.exports = function(files, basePath, jspm, client) {
     if(jspm.paths !== undefined && typeof jspm.paths === 'object')
         client.jspm.paths = jspm.paths;
 
-  // Pass on options to client
-  client.jspm.useBundles = jspm.useBundles;
-  client.jspm.stripExtension = jspm.stripExtension;
+    // Pass on options to client
+    client.jspm.useBundles = jspm.useBundles;
+    client.jspm.stripExtension = jspm.stripExtension;
 
     var packagesPath = path.normalize(basePath + '/' + jspm.packages + '/');
     var configPath = path.normalize(basePath + '/' + jspm.config);
