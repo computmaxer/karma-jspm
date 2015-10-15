@@ -73,6 +73,8 @@ module.exports = function(files, basePath, jspm, client) {
     client.jspm = {};
   if(jspm.paths !== undefined && typeof jspm.paths === 'object')
     client.jspm.paths = jspm.paths;
+  if(jspm.meta !== undefined && typeof jspm.meta === 'object')
+    client.jspm.meta = jspm.meta;
 
   // Pass on options to client
   client.jspm.useBundles = jspm.useBundles;
