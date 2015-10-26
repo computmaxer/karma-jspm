@@ -1,6 +1,6 @@
 {
   "name": "karma-jspm",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Include jspm module loader for karma runs; allows dynamic loading of src and test files and modules",
   "main": "index.js",
   "keywords": [
