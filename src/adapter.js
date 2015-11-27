@@ -21,7 +21,9 @@
             "or by running 'jspm dl-loader'.");
     }
 
-    System.config({ baseURL: 'base' });
+    if (!System.baseURL) {
+        System.config({ baseURL: 'base' });
+    }
 
     var stripExtension = typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true;
 
