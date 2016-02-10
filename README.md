@@ -96,3 +96,11 @@ jspm: {
     stripExtension: false
 }
 ```
+
+Most of the time, you do not want to cache your entire jspm_packages directory, but serve it from the disk. This is done by default, but can be reversed as follows:
+
+```js
+jspm: {
+    cachePackages: true
+}
+```
