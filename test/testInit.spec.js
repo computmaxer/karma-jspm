@@ -25,7 +25,6 @@ describe('jspm plugin init', function(){
     });
 
     it('should add config.js to the top of the files array', function(){
-        console.log(files);
         expect(normalPath(files[4].pattern)).toEqual(normalPath(basePath + '/custom_config.js'));
         expect(files[4].included).toEqual(true);
     });
