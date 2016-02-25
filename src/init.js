@@ -58,7 +58,7 @@ function getJspmPackageJson(dir) {
   return pjson;
 }
 
-module.exports = function(files, basePath, jspm, client) {
+module.exports = function(files, basePath, jspm, client, emitter) {
   // Initialize jspm config if it wasn't specified in karma.conf.js
   if(!jspm)
     jspm = {};
@@ -115,10 +115,15 @@ module.exports = function(files, basePath, jspm, client) {
   // 1. Add all the files as "served" files to the files array
   // 2. Expand out and globs to end up with actual files for jspm to load.
   //    Store that in client.jspm.expandedFiles
-  client.jspm.expandedFiles = flatten(jspm.loadFiles.map(function(file){
-    files.push(createServedPattern(basePath + "/" + (file.pattern || file), file.nocache || false));
-    return expandGlob(file, basePath);
-  }));
+  function addExpandedFiles() {
+    client.jspm.expandedFiles = flatten(jspm.loadFiles.map(function(file){
+      files.push(createServedPattern(basePath + "/" + (file.pattern || file), file.nocache || false));
+      return expandGlob(file, basePath);
+    }));
+  }
+  addExpandedFiles();
+
+  emitter.on('file_list_modified', addExpandedFiles);
 
   // Add served files to files array
   jspm.serveFiles.map(function(file){
