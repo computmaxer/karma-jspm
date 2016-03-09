@@ -31,6 +31,6 @@
   },
   "devDependencies": {
     "gulp": "^3.8.7",
-    "gulp-jasmine": "^1.0.0"
+    "gulp-jasmine": "^2.3.0"
   }
 }
