@@ -13,6 +13,7 @@ describe('jspm plugin init', function(){
     beforeEach(function(){
         files = [];
         jspm = {
+            browser: 'custom_browser.js',
             config: 'custom_config.js',
             loadFiles: ['src/**/*.js',{pattern:'not-cached.js', nocache:true}],
             packages: 'custom_packages/',
@@ -24,7 +25,12 @@ describe('jspm plugin init', function(){
     });
 
     it('should add config.js to the top of the files array', function(){
-        expect(normalPath(files[3].pattern)).toEqual(normalPath(basePath + '/custom_config.js'));
+        expect(normalPath(files[4].pattern)).toEqual(normalPath(basePath + '/custom_config.js'));
+        expect(files[4].included).toEqual(true);
+    });
+
+    it('should add browser.js to the top of the files array', function(){
+        expect(normalPath(files[3].pattern)).toEqual(normalPath(basePath + '/custom_browser.js'));
         expect(files[3].included).toEqual(true);
     });
 
@@ -55,10 +61,10 @@ describe('jspm plugin init', function(){
     });
 
     it('should use the configured jspm_packages path and include it in the files array', function(){
-        expect(normalPath(files[4].pattern)).toEqual(normalPath(path.resolve(cwd, './custom_packages/**/*')));
-        expect(files[4].included).toEqual(false);
-        expect(files[4].served).toEqual(true);
-        expect(files[4].watched).toEqual(false); 
+        expect(normalPath(files[5].pattern)).toEqual(normalPath(path.resolve(cwd, './custom_packages/**/*')));
+        expect(files[5].included).toEqual(false);
+        expect(files[5].served).toEqual(true);
+        expect(files[5].watched).toEqual(false);
     });
 
     it('should assign true to nocache option to served files with nocache option in jspm.loadFiles', function(){
