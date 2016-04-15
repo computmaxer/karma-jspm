@@ -76,10 +76,13 @@ module.exports = function(files, basePath, jspm, client) {
     client.jspm.paths = jspm.paths;
   if(jspm.meta !== undefined && typeof jspm.meta === 'object')
     client.jspm.meta = jspm.meta;
+  if(jspm.appendExclamation !== undefined && Array.isArray(jspm.appendExclamation))
+    client.jspm.appendExclamation = jspm.appendExclamation;
 
   // Pass on options to client
   client.jspm.useBundles = jspm.useBundles;
   client.jspm.stripExtension = jspm.stripExtension;
+
 
   var packagesPath = path.normalize(basePath + '/' + jspm.packages + '/');
   var browserPath = path.normalize(basePath + '/' + jspm.browser);
