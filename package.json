@@ -28,7 +28,12 @@
     "url": "git@github.com:Workiva/karma-jspm.git"
   },
   "dependencies": {
-    "glob": "~7.0.5"
+    "glob": "~7.0.5",
+    "inline-source-map-comment": "^1.0.5",
+    "istanbul": "^0.4.3",
+    "karma-coverage": "^1.1.1",
+    "minimatch": "^3.0.0",
+    "remap-istanbul": "github:m-a-r-c-e-l-i-n-o/remap-istanbul"
   },
   "devDependencies": {
     "cross-env": "^1.0.7",
