@@ -27,7 +27,7 @@
 
     var promises = [],
         stripExtension = typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true;
-
+    
     // Prevent immediately starting tests.
     karma.loaded = function() {
 
@@ -39,24 +39,32 @@
             });
         }
 
+        if(karma.config.jspm.meta !== undefined &&
+            typeof karma.config.jspm.meta === 'object') {
+            System.config({
+                meta: karma.config.jspm.meta
+            });
+        }
+
         // Exclude bundle configurations if useBundles option is not specified
         if(!karma.config.jspm.useBundles){
             System.bundles = [];
         }
 
-        // Load everything specified in loadFiles
+        // Load everything specified in loadFiles in the specified order
+        var promiseChain = Promise.resolve();
         for (var i = 0; i < karma.config.jspm.expandedFiles.length; i++) {
-            var modulePath = karma.config.jspm.expandedFiles[i];
-            var promise = System['import'](extractModuleName(modulePath))
-              ['catch'](function(e) {
-                throw e;
-            });
-            promises.push(promise);
+            promiseChain = promiseChain.then((function (moduleName) {
+                return function () {
+                    return System['import'](moduleName);
+                };
+            })(extractModuleName(karma.config.jspm.expandedFiles[i])));
         }
 
-        // Promise comes from the systemjs polyfills
-        Promise.all(promises).then(function() {
+        promiseChain.then(function () {
             karma.start();
+        }, function (e) {
+            karma.error(e.name + ": " + e.message);
         });
     };
 

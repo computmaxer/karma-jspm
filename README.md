@@ -4,10 +4,11 @@ karma-jspm includes the jspm module loader for karma runs. This allows dynamic l
 
 ##Installation##
 
-Available in npm: `npm install karma-jspm`
+Available in npm: `npm install karma-jspm --save-dev`
 
 **This plugin assumes you are using jspm in your project.** You will need to have a `config.js` in the root of your project (though this is configurable) as well as a `jspm_packages` directory containing systemjs and the es6-module-loader.
 
+**This plugin can now support JSPM 0.17 beta**
 ##Configuration##
 
 *karma.conf.js*
@@ -47,6 +48,14 @@ You may have named your jspm `config.js` file or `jspm_packages` directory somet
 jspm: {
     config: "myJspmConfig.js",
     packages: "my_jspm_modules/"
+}
+```
+
+For JSPM 0.17 Beta, you have to specify the `jspm.browser.js` file.
+
+```js
+jspm: {
+    browser: "myJspmBrowser.js",
 }
 ```
 

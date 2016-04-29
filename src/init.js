@@ -31,8 +31,9 @@ var createPattern = function(path) {
     return {pattern: path, included: true, served: true, watched: false};
 };
 
-var createServedPattern = function(path){
-    return {pattern: path, included: false, served: true, watched: true};
+var createServedPattern = function(path, nocache){
+  nocache = nocache || false;
+  return {pattern: path, included: false, served: true, nocache:nocache, watched: true};
 };
 
 function getJspmPackageJson(dir) {
@@ -58,28 +59,31 @@ function getJspmPackageJson(dir) {
 }
 
 module.exports = function(files, basePath, jspm, client) {
-    // Initialize jspm config if it wasn't specified in karma.conf.js
-    if(!jspm)
-        jspm = {};
-    if(!jspm.config)
-        jspm.config = getJspmPackageJson(basePath).configFile || 'config.js';
-    if(!jspm.loadFiles)
-        jspm.loadFiles = [];
-    if(!jspm.serveFiles)
-        jspm.serveFiles = [];
-    if(!jspm.packages)
-        jspm.packages = getJspmPackageJson(basePath).directories.packages || 'jspm_packages/';
-    if(!client.jspm)
-        client.jspm = {};
-    if(jspm.paths !== undefined && typeof jspm.paths === 'object')
-        client.jspm.paths = jspm.paths;
+  // Initialize jspm config if it wasn't specified in karma.conf.js
+  if(!jspm)
+    jspm = {};
+  if(!jspm.config)
+    jspm.config = getJspmPackageJson(basePath).configFile || "config.js";
+  if(!jspm.loadFiles)
+    jspm.loadFiles = [];
+  if(!jspm.serveFiles)
+    jspm.serveFiles = [];
+  if(!jspm.packages)
+    jspm.packages = getJspmPackageJson(basePath).directories.packages || "jspm_packages/";
+  if(!client.jspm)
+    client.jspm = {};
+  if(jspm.paths !== undefined && typeof jspm.paths === 'object')
+    client.jspm.paths = jspm.paths;
+  if(jspm.meta !== undefined && typeof jspm.meta === 'object')
+    client.jspm.meta = jspm.meta;
 
     // Pass on options to client
     client.jspm.useBundles = jspm.useBundles;
     client.jspm.stripExtension = jspm.stripExtension;
 
-    var packagesPath = path.normalize(basePath + '/' + jspm.packages + '/');
-    var configPath = path.normalize(basePath + '/' + jspm.config);
+  var packagesPath = path.normalize(basePath + '/' + jspm.packages + '/');
+  var browserPath = path.normalize(basePath + '/' + jspm.browser);
+  var configPath = path.normalize(basePath + '/' + jspm.config);
 
     // Allow Karma to serve all files within jspm_packages.
     // This allows jspm/SystemJS to load them
@@ -87,28 +91,34 @@ module.exports = function(files, basePath, jspm, client) {
     jspmPattern.watched = false;
     files.unshift(jspmPattern);
 
-    // Add SystemJS loader and jspm config
-    function getLoaderPath(fileName){
-        var exists = glob.sync(packagesPath + fileName + '@*.js');
-        if(exists && exists.length != 0){
-            return packagesPath + fileName + '@*.js';
-        } else {
-            return packagesPath + fileName + '.js';
-        }
+  // Add SystemJS loader and jspm config
+  function getLoaderPath(fileName){
+    var exists = glob.sync(packagesPath + fileName + '@*.js');
+    if(exists && exists.length != 0){
+      return packagesPath + fileName + '@*.js';
+    } else {
+      return packagesPath + fileName + '.js';
     }
-    files.unshift(createPattern(configPath));
-    files.unshift(createPattern(__dirname + '/adapter.js'));
-    files.unshift(createPattern(getLoaderPath('system-polyfills.src')));
-    files.unshift(createPattern(getLoaderPath('system.src')));
+  }
+  files.unshift(createPattern(configPath));
 
-    // Loop through all of jspm.load_files and do two things
-    // 1. Add all the files as 'served' files to the files array
-    // 2. Expand out and globs to end up with actual files for jspm to load.
-    //    Store that in client.jspm.expandedFiles
-    client.jspm.expandedFiles = flatten(jspm.loadFiles.map(function(file){
-        files.push(createServedPattern(basePath + '/' + (file.pattern || file)));
-        return expandGlob(file, basePath);
-    }));
+  // Needed for JSPM 0.17 beta
+  if(jspm.browser) {
+    files.unshift(createPattern(browserPath));
+  }
+
+  files.unshift(createPattern(__dirname + '/adapter.js'));
+  files.unshift(createPattern(getLoaderPath('system-polyfills.src')));
+  files.unshift(createPattern(getLoaderPath('system.src')));
+
+  // Loop through all of jspm.load_files and do two things
+  // 1. Add all the files as "served" files to the files array
+  // 2. Expand out and globs to end up with actual files for jspm to load.
+  //    Store that in client.jspm.expandedFiles
+  client.jspm.expandedFiles = flatten(jspm.loadFiles.map(function(file){
+    files.push(createServedPattern(basePath + "/" + (file.pattern || file), file.nocache || false));
+    return expandGlob(file, basePath);
+  }));
 
     // Add served files to files array
     jspm.serveFiles.map(function(file){
