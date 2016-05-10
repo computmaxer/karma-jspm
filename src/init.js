@@ -31,9 +31,14 @@ var createPattern = function(path) {
   return {pattern: path, included: true, served: true, watched: false};
 };
 
-var createServedPattern = function(path, nocache){
-  nocache = nocache || false;
-  return {pattern: path, included: false, served: true, nocache:nocache, watched: true};
+var createServedPattern = function(path, file){
+  return {
+    pattern: path,
+    included: file && "included" in file ? file.included : false,
+    served: file && "served" in file ? file.served : true,
+    nocache: file && "nocache" in file ? file.nocache : false,
+    watched: file && "watched" in file ? file.watched : true
+  };
 };
 
 function getJspmPackageJson(dir) {
@@ -116,7 +121,7 @@ module.exports = function(files, basePath, jspm, client) {
   // 2. Expand out and globs to end up with actual files for jspm to load.
   //    Store that in client.jspm.expandedFiles
   client.jspm.expandedFiles = flatten(jspm.loadFiles.map(function(file){
-    files.push(createServedPattern(basePath + "/" + (file.pattern || file), file.nocache || false));
+    files.push(createServedPattern(basePath + "/" + (file.pattern || file), typeof file !== "string" ? file : null));
     return expandGlob(file, basePath);
   }));
 

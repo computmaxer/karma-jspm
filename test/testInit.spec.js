@@ -15,7 +15,7 @@ describe('jspm plugin init', function(){
         jspm = {
             browser: 'custom_browser.js',
             config: 'custom_config.js',
-            loadFiles: ['src/**/*.js',{pattern:'not-cached.js', nocache:true}],
+            loadFiles: ['src/**/*.js',{pattern:'not-cached.js', nocache:true}, {pattern:'not-watched.js', watched:false}],
             packages: 'custom_packages/',
             serveFiles: ['testfile.js']
         };
@@ -68,10 +68,18 @@ describe('jspm plugin init', function(){
     });
 
     it('should assign true to nocache option to served files with nocache option in jspm.loadFiles', function(){
-        expect(normalPath(files[files.length - 2].pattern)).toEqual(normalPath(cwd + '/not-cached.js'));
+        expect(normalPath(files[files.length - 3].pattern)).toEqual(normalPath(cwd + '/not-cached.js'));
+        expect(files[files.length - 3].included).toEqual(false);
+        expect(files[files.length - 3].served).toEqual(true);
+        expect(files[files.length - 3].watched).toEqual(true);
+        expect(files[files.length - 3].nocache).toEqual(true);
+    });
+
+    it('should respect watched flag when adding jspm.loadFiles to served files', function(){
+        expect(normalPath(files[files.length - 2].pattern)).toEqual(normalPath(cwd + '/not-watched.js'));
         expect(files[files.length - 2].included).toEqual(false);
         expect(files[files.length - 2].served).toEqual(true);
-        expect(files[files.length - 2].watched).toEqual(true);
-        expect(files[files.length - 2].nocache).toEqual(true);
+        expect(files[files.length - 2].watched).toEqual(false);
+        expect(files[files.length - 2].nocache).toEqual(false);
     });
 });
