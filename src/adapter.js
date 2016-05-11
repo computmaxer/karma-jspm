@@ -24,6 +24,7 @@
     System.config({ baseURL: 'base' });
 
     var stripExtension = typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true;
+    var appendExclamation = Array.isArray(karma.config.jspm.appendExclamation) ? karma.config.jspm.appendExclamation : [];
 
     // Prevent immediately starting tests.
     karma.loaded = function() {
@@ -65,8 +66,16 @@
     };
 
     function extractModuleName(fileName) {
-        if (stripExtension) {
+        // TODO(etsai) - this should be pulling it from systemjs config instead.  This is assuming that we have defaultExtension: "js"
+        if (stripExtension && /\.js$/.test(fileName)) {
             return fileName.replace(/\.js$/, "");
+        }
+        for (var ind in appendExclamation) {
+            var fileType = appendExclamation[ind];
+            var re = new RegExp("." + fileType + "$", 'i');
+            if (re.test(fileName)) {
+                return fileName + "!";
+            }
         }
         return fileName;
     }
