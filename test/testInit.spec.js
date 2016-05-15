@@ -7,7 +7,7 @@ var normalPath = function(path){
 }
 
 describe('jspm plugin init', function(){
-    var files, jspm, client;
+    var files, jspm, client, emitter;
     var basePath = path.resolve(__dirname, '..');
 
     beforeEach(function(){
@@ -20,8 +20,11 @@ describe('jspm plugin init', function(){
             serveFiles: ['testfile.js']
         };
         client = {};
+        emitter = {
+            on: function() {}
+        }
 
-        initJspm(files, basePath, jspm, client);
+        initJspm(files, basePath, jspm, client, emitter);
     });
 
     it('should add config.js to the top of the files array', function(){
