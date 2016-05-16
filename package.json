@@ -9,7 +9,7 @@
     "jspm"
   ],
   "scripts": {
-    "test": "gulp test"
+    "test": "cross-env JASMINE_CONFIG_PATH=test/jasmine.json jasmine 'test/**/*.spec.js'"
   },
   "author": {
     "name": "Max Peterson",
@@ -30,7 +30,7 @@
     "glob": "~3.2"
   },
   "devDependencies": {
-    "gulp": "^3.8.7",
-    "gulp-jasmine": "^2.3.0"
+    "cross-env": "^1.0.7",
+    "jasmine": "^2.4.1"
   }
 }
