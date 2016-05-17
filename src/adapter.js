@@ -14,28 +14,32 @@
  * limitations under the License.
  */
 
-(function(karma, System) {
+/*eslint-env browser*/
+/*global Promise*/
+
+(function (karma, System) {
     if (!System) {
-        throw new Error("SystemJS was not found. Please make sure you have " +
-            "initialized jspm via installing a dependency with jspm, " +
-            "or by running 'jspm dl-loader'.");
+        throw new Error('SystemJS was not found. Please make sure you have ' +
+            'initialized jspm via installing a dependency with jspm, ' +
+            'or by running \'jspm dl-loader\'.');
     }
 
-    System.config({ baseURL: 'base' });
+    System.config({baseURL: 'base'});
 
     var stripExtension = typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true;
 
     // Prevent immediately starting tests.
-    karma.loaded = function() {
+    karma.loaded = function () {
 
-        if(karma.config.jspm.paths !== undefined &&
+        if (karma.config.jspm.paths !== undefined &&
             typeof karma.config.jspm.paths === 'object') {
+
             System.config({
                 paths: karma.config.jspm.paths
             });
         }
 
-        if(karma.config.jspm.meta !== undefined &&
+        if (karma.config.jspm.meta !== undefined &&
             typeof karma.config.jspm.meta === 'object') {
             System.config({
                 meta: karma.config.jspm.meta
@@ -43,7 +47,7 @@
         }
 
         // Exclude bundle configurations if useBundles option is not specified
-        if(!karma.config.jspm.useBundles){
+        if (!karma.config.jspm.useBundles) {
             System.bundles = [];
         }
 
@@ -60,13 +64,13 @@
         promiseChain.then(function () {
             karma.start();
         }, function (e) {
-            karma.error(e.name + ": " + e.message);
+            karma.error(e.name + ': ' + e.message);
         });
     };
 
     function extractModuleName(fileName) {
         if (stripExtension) {
-            return fileName.replace(/\.js$/, "");
+            return fileName.replace(/\.js$/, '');
         }
         return fileName;
     }

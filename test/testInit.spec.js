@@ -1,10 +1,12 @@
+/*global describe, expect, it, beforeEach*/
+
 var cwd = process.cwd();
 var path = require('path');
 var initJspm = require('../src/init');
 
 var normalPath = function(path){
     return path.replace(/\\/g,'/');
-}
+};
 
 describe('jspm plugin init', function(){
     var files, jspm, client, emitter;
@@ -22,7 +24,7 @@ describe('jspm plugin init', function(){
         client = {};
         emitter = {
             on: function() {}
-        }
+        };
 
         initJspm(files, basePath, jspm, client, emitter);
     });
