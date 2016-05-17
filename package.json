@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "cross-env": "^1.0.7",
+    "eslint": "^2.10.2",
     "jasmine": "^2.4.1"
   }
 }
