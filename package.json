@@ -1,6 +1,6 @@
 {
   "name": "karma-jspm",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Include jspm module loader for karma runs; allows dynamic loading of src and test files and modules",
   "main": "index.js",
   "keywords": [
@@ -9,7 +9,7 @@
     "jspm"
   ],
   "scripts": {
-    "test": "gulp test",
+    "test": "cross-env JASMINE_CONFIG_PATH=test/jasmine.json jasmine 'test/**/*.spec.js'",
     "lint": "eslint **/*.js"
   },
   "author": {
@@ -31,7 +31,7 @@
     "glob": "~3.2"
   },
   "devDependencies": {
-    "gulp": "^3.8.7",
-    "gulp-jasmine": "^2.3.0"
+    "cross-env": "^1.0.7",
+    "jasmine": "^2.4.1"
   }
 }
