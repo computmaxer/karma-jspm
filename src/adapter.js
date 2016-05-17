@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-/*global window*/
+/*eslint-env browser*/
+/*global Promise*/
 
 (function (karma, System) {
     if (!System) {
@@ -25,8 +26,7 @@
 
     System.config({baseURL: 'base'});
 
-    var promises = [],
-        stripExtension = typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true;
+    var stripExtension = typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true;
 
     // Prevent immediately starting tests.
     karma.loaded = function () {
@@ -64,7 +64,7 @@
         promiseChain.then(function () {
             karma.start();
         }, function (e) {
-            karma.error(e.name + ": " + e.message);
+            karma.error(e.name + ': ' + e.message);
         });
     };
 
