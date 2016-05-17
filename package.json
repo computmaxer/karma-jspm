@@ -1,6 +1,6 @@
 {
   "name": "karma-jspm",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Include jspm module loader for karma runs; allows dynamic loading of src and test files and modules",
   "main": "index.js",
   "keywords": [
@@ -32,6 +32,6 @@
   },
   "devDependencies": {
     "gulp": "^3.8.7",
-    "gulp-jasmine": "^1.0.0"
+    "gulp-jasmine": "^2.3.0"
   }
 }
