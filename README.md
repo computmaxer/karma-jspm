@@ -59,6 +59,14 @@ jspm: {
 }
 ```
 
+For JSPM 0.17beta.15 or above, you may also (optionally) need to specify the `jspm.dev.js` file.
+
+```js
+jspm: {
+    devConfig: "myJspmDevConfig.js",
+}
+```
+
 You may want to make additional files/a file pattern available for jspm to load, but not load it right away. Simply add that to `serveFiles`. 
 One use case for this is to only put test specs in `loadFiles`, and jspm will only load the src files when and if the test files require them. Such a config would look like this:
 
