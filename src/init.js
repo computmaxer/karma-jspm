@@ -89,6 +89,8 @@ module.exports = function(files, basePath, jspm, client, emitter) {
     var packagesPath = path.normalize(basePath + '/' + jspm.packages + '/');
     var browserPath = path.normalize(basePath + '/' + jspm.browser);
     var configPath = path.normalize(basePath + '/' + jspm.config);
+    var devConfigPath = path.normalize(basePath + '/' + jspm.devConfig);
+    var nodeConfigPath = path.normalize(basePath + '/' + jspm.nodeConfig);
 
     // Add SystemJS loader and jspm config
     function getLoaderPath(fileName){
@@ -104,6 +106,14 @@ module.exports = function(files, basePath, jspm, client, emitter) {
     // Needed for JSPM 0.17 beta
     if(jspm.browser) {
         files.unshift(createPattern(browserPath));
+    }
+
+    // Added in JSPM 0.17-beta.17
+    if(jspm.devConfig) {
+        files.push(createPattern(devConfigPath));
+    }
+    if(jspm.nodeConfig) {
+        files.push(createPattern(nodeConfigPath));
     }
 
     files.unshift(createPattern(__dirname + '/adapter.js'));

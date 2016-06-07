@@ -17,6 +17,8 @@ describe('jspm plugin init', function(){
         jspm = {
             browser: 'custom_browser.js',
             config: 'custom_config.js',
+            devConfig: 'custom_dev_config.js',
+            nodeConfig: 'custom_node_config.js',
             loadFiles: ['src/**/*.js',{pattern:'not-cached.js', nocache:true}, {pattern:'not-watched.js', watched:false}],
             packages: 'custom_packages/',
             serveFiles: ['testfile.js']
@@ -37,6 +39,16 @@ describe('jspm plugin init', function(){
     it('should add browser.js to the top of the files array', function(){
         expect(normalPath(files[3].pattern)).toEqual(normalPath(basePath + '/custom_browser.js'));
         expect(files[3].included).toEqual(true);
+    });
+
+    it('should add dev.js after the browser and config in the files array', function(){
+        expect(normalPath(files[5].pattern)).toEqual(normalPath(basePath + '/custom_dev_config.js'));
+        expect(files[5].included).toEqual(true);
+    });
+
+    it('should add node.js after the browser and config in the files array', function(){
+        expect(normalPath(files[6].pattern)).toEqual(normalPath(basePath + '/custom_node_config.js'));
+        expect(files[6].included).toEqual(true);
     });
 
     it('should add adapter.js to the top of the files array', function(){
