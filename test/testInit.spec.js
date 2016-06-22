@@ -39,6 +39,14 @@ describe('jspm plugin init', function(){
         expect(files[3].included).toEqual(true);
     });
 
+    it('should support an array of config files', function() {
+        jspm.config = ['custom_config.js', 'another_config.js'];
+        files = [];
+        initJspm(files, basePath, jspm, client, emitter);
+        expect(normalPath(files[4].pattern)).toEqual(normalPath(basePath + '/custom_config.js'));
+        expect(normalPath(files[5].pattern)).toEqual(normalPath(basePath + '/another_config.js'));
+    });
+
     it('should add adapter.js to the top of the files array', function(){
         expect(normalPath(files[2].pattern)).toEqual(normalPath(basePath + '/src/adapter.js'));
         expect(files[2].included).toEqual(true);
