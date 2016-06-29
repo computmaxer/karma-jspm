@@ -96,3 +96,32 @@ describe('jspm plugin init', function(){
         expect(files[files.length - 3].nocache).toEqual(false);
     });
 });
+
+describe('jspm plugin init with adapter', function(){
+    var files, jspm, client, emitter;
+    var basePath = path.resolve(__dirname, '..');
+
+    beforeEach(function(){
+        files = [];
+        jspm = {
+            browser: 'custom_browser.js',
+            config: 'custom_config.js',
+            loadFiles: ['src/**/*.js',{pattern:'not-cached.js', nocache:true}, {pattern:'not-watched.js', watched:false}],
+            packages: 'custom_packages/',
+            serveFiles: ['testfile.js'],
+            adapter: 'custom_adapter.js'
+        };
+        client = {};
+        emitter = {
+            on: function() {}
+        };
+
+        initJspm(files, basePath, jspm, client, emitter);
+    });
+
+    it('should add custom adapter.js to the top of the files array', function(){
+        expect(normalPath(files[2].pattern)).toEqual(normalPath(basePath + '/custom_adapter.js'));
+        expect(files[2].included).toEqual(true);
+    });
+
+});
