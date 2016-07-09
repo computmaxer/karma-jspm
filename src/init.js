@@ -102,13 +102,13 @@ module.exports = function(files, basePath, jspm, client, emitter) {
             return packagesPath + fileName + '.js';
         }
     }
-    
+
     Array.prototype.unshift.apply(files,
         configPaths.map(function(configPath) {
             return createPattern(configPath)
         })
     );
-    
+
     // Needed for JSPM 0.17 beta
     if(jspm.browser) {
         files.unshift(createPattern(browserPath));
@@ -139,7 +139,9 @@ module.exports = function(files, basePath, jspm, client, emitter) {
 
     // Allow Karma to serve all files within jspm_packages.
     // This allows jspm/SystemJS to load them
-    var jspmPattern = createServedPattern(packagesPath + '**/*', {nocache: jspm.cachePackages !== true});
+    var jspmPattern = createServedPattern(
+        packagesPath + '!(system-polyfills.src.js|system.src.js)/**', {nocache: jspm.cachePackages !== true}
+    );
     jspmPattern.watched = false;
     files.push(jspmPattern);
 };
