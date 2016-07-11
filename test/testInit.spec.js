@@ -74,7 +74,7 @@ describe('jspm plugin init', function(){
     });
 
     it('should use the configured jspm_packages path and include it at the end of the files array', function(){
-        expect(normalPath(files[files.length - 1].pattern)).toEqual(normalPath(path.resolve(cwd, './custom_packages/**/*')));
+        expect(normalPath(files[files.length - 1].pattern)).toEqual(normalPath(path.resolve(cwd, './custom_packages/!(system-polyfills.src.js|system.src.js)/**')));
         expect(files[files.length - 1].included).toEqual(false);
         expect(files[files.length - 1].served).toEqual(true);
         expect(files[files.length - 1].watched).toEqual(false);
