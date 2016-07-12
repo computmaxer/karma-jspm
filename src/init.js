@@ -143,7 +143,9 @@ module.exports = function(files, basePath, jspm, client, emitter) {
 
     // Allow Karma to serve all files within jspm_packages.
     // This allows jspm/SystemJS to load them
-    var jspmPattern = createServedPattern(packagesPath + '**/*', {nocache: jspm.cachePackages !== true});
+    var jspmPattern = createServedPattern(
+        packagesPath + '!(system-polyfills.src.js|system.src.js)/**', {nocache: jspm.cachePackages !== true}
+    );
     jspmPattern.watched = false;
     files.push(jspmPattern);
 };
