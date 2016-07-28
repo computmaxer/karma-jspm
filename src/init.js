@@ -33,7 +33,6 @@ var createPattern = function (path) {
 
 var createServedPattern = function (path, file) {
 
-  console.log(path, file);
   return {
     pattern: path,
     included: file && 'included' in file ? file.included : false,
