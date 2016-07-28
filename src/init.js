@@ -92,7 +92,7 @@ module.exports = function (files, basePath, jspm, client, emitter) {
 
   // Pass on options to client
   client.jspm.useBundles = jspm.useBundles;
-  client.jspm.extensionsToStrip = jspm.extensionsToStrip || [];
+  client.jspm.extensionsToStrip = jspm.extensionsToStrip || ['js'];
   client.jspm.ignoreOverrideError = jspm.ignoreOverrideError || false;
 
   var packagesPath = path.normalize(basePath + '/' + jspm.packages + '/');
