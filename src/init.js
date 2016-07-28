@@ -91,8 +91,25 @@ module.exports = function (files, basePath, jspm, client, emitter) {
 
   // Pass on options to client
   client.jspm.useBundles = jspm.useBundles;
-  client.jspm.extensionsToStrip = jspm.extensionsToStrip || ['js'];
+  client.jspm.extensionsToStrip = jspm.extensionsToStrip === void 0 ? ['js'] : jspm.extensionsToStrip;
   client.jspm.ignoreOverrideError = jspm.ignoreOverrideError || false;
+
+  /**
+   * @deprecated
+   */
+  client.jspm.stripExtension = jspm.stripExtension;
+
+  /**
+   * @deprecated
+   */
+  if(jspm.paths !== undefined && typeof jspm.paths === 'object')
+    client.jspm.systemJs.paths = jspm.paths;
+
+  /**
+   * @deprecated
+   */
+  if(jspm.meta !== undefined && typeof jspm.meta === 'object')
+    client.jspm.systemJs.meta = jspm.meta;
 
   var packagesPath = path.normalize(basePath + '/' + jspm.packages + '/');
   var browserPath = path.normalize(basePath + '/' + jspm.browser);

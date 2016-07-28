@@ -93,8 +93,10 @@
      * @returns {*}
      */
     function removeExtension(fileName) {
+      
+      if(typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true)
 
-        karma.config.jspm.extensionsToStrip.forEach(function (extension) {
+        (karma.config.jspm.extensionsToStrip || []).forEach(function (extension) {
 
             fileName = fileName.replace(new RegExp('\\.' + extension + '$'), '')
         });

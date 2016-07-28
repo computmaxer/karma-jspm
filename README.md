@@ -91,7 +91,7 @@ jspm: {
 }
 ``` 
 
-By default the plugin will strip the file extension of the js files. To change that, specify the `extensionsToStrip` option:
+By default the plugin will strip the file extension of the js files. To change that, specify the `extensionsToStrip` option. If you don't want to strip any file extensions pass false;
 
 ```js
 jspm: {
