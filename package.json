@@ -28,7 +28,7 @@
     "url": "git@github.com:Workiva/karma-jspm.git"
   },
   "dependencies": {
-    "glob": "~3.2"
+    "glob": "~7.0.5"
   },
   "devDependencies": {
     "cross-env": "^1.0.7",
