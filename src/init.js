@@ -117,6 +117,8 @@ module.exports = function(files, basePath, jspm, client, emitter) {
     files.unshift(createPattern(__dirname + '/adapter.js'));
     files.unshift(createPattern(getLoaderPath('system-polyfills.src')));
     files.unshift(createPattern(getLoaderPath('system.src')));
+    files.unshift(createPattern(getLoaderPath('system-polyfills')));
+    files.unshift(createPattern(getLoaderPath('system')));
 
     // Loop through all of jspm.load_files and do two things
     // 1. Add all the files as "served" files to the files array
