@@ -16,8 +16,9 @@
 
 var initJspm = require('./src/init');
 
-initJspm.$inject = ['config.files', 'config.basePath', 'config.jspm', 'config.client', 'emitter'];
+initJspm.$inject = ['config.files', 'config.basePath', 'config.jspm', 'config.reporters', 'config.client', 'emitter'];
 
 module.exports = {
-  'framework:jspm': ['factory', initJspm]
+  'framework:jspm': ['factory', initJspm],
+  'reporter:jspm': ['type', require('./src/reporter')]
 };

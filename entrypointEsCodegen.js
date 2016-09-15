@@ -1,0 +1,1 @@
+(function () {'use strict';global.escodegen = require('escodegen');escodegen.browser = true;}());

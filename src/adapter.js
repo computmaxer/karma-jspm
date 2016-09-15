@@ -17,16 +17,17 @@
 /*eslint-env browser*/
 /*global Promise*/
 
-(function (karma, System) {
+(function (karma, System, Instrumenter, btoa) {
     if (!System) {
         throw new Error('SystemJS was not found. Please make sure you have ' +
             'initialized jspm via installing a dependency with jspm, ' +
             'or by running \'jspm dl-loader\'.');
     }
 
-    System.config({baseURL: 'base'});
+    System.config({ baseURL: 'base' });
 
     var stripExtension = typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true;
+    var sourceMapPrefix = '//# sourceMappingURL=data:application/json;base64,';
 
     // Prevent immediately starting tests.
     karma.loaded = function () {
@@ -49,6 +50,30 @@
         // Exclude bundle configurations if useBundles option is not specified
         if (!karma.config.jspm.useBundles) {
             System.bundles = [];
+        }
+
+        if (typeof karma.config.jspm.coverage === 'object' && Instrumenter && btoa) {
+            // create instrument with embed source to provide source to remap directly
+            var instrument = new Instrumenter({ embedSource: true });
+            // store original instantiate
+            var systemInstantiate = System.instantiate;
+            System.instantiate = function (load) {
+                var fileKey = load.name.replace(System.baseURL, '');
+                if (karma.config.jspm.coverage[fileKey] && load.metadata.sourceMap) {
+                    // keeping sourcesContent causes duplicate reports
+                    // it's an issue with remap-istanbul that hasn't
+                    // been investigated yet.
+                    delete load.metadata.sourceMap.sourcesContent;
+                    // inlined-sourceMap to be added to file
+                    var sourceMap = '\n' + sourceMapPrefix + btoa(JSON.stringify(load.metadata.sourceMap));
+                    load.source = instrument.instrumentSync(
+                        load.source + sourceMap,
+                        // make the path-like file key into something that can be used as a name
+                        fileKey
+                    );
+                }
+                return systemInstantiate.call(System, load);
+            };
         }
 
         // Load everything specified in loadFiles in the specified order
@@ -74,4 +99,4 @@
         }
         return fileName;
     }
-})(window.__karma__, window.System);
+})(window.__karma__, window.System, window.Instrumenter, window.btoa);
