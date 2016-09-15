@@ -133,13 +133,13 @@ module.exports = function (files, basePath, jspm, reporters, client, emitter) {
     files.unshift(createPattern(__dirname + '/adapter.js'));
     if (_.includes(reporters, 'jspm')) {
         // load istanbul directly in browser to instrument files after inplace transpiling
-        files.unshift(createPattern(__dirname + '/../node_modules/istanbul/lib/instrumenter.js'));
+        files.unshift(createPattern(require.resolve('istanbul/lib/instrumenter')));
         // ugly dependency, is build using postinstall script from escodegen dependency
         files.unshift(createPattern(__dirname + '/../escodegen.js'));
         // esprima is needed by istanbul
-        files.unshift(createPattern(__dirname + '/../node_modules/esprima/esprima.js'));
+        files.unshift(createPattern(require.resolve('esprima')));
         // base64 for older browsers
-        files.unshift(createPattern(__dirname + '/../node_modules/Base64/base64.js'));
+        files.unshift(createPattern(require.resolve('Base64')));
     }
     files.unshift(createPattern(getLoaderPath('system-polyfills.src')));
     files.unshift(createPattern(getLoaderPath('system.src')));

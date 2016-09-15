@@ -11,7 +11,7 @@
     "scripts":         {
         "test":        "cross-env JASMINE_CONFIG_PATH=test/jasmine.json jasmine 'test/**/*.spec.js'",
         "lint":        "eslint **/*.js",
-        "postinstall": "node node_modules/commonjs-everywhere/bin/cjsify -ma path: entrypointEsCodegen.js > escodegen.js"
+        "postinstall": "node buildEscodegen.js"
     },
     "author":          {
         "name":  "Max Peterson",
@@ -33,7 +33,7 @@
         "istanbul":            "^0.4.3",
         "Base64":              "^1.0.0",
         "lodash":              "^4.15.0",
-        "escodegen":           "^1.4.0",
+        "escodegen":           "^1.8.1",
         "esprima":             "^2.7.3",
         "commonjs-everywhere": "^0.9.7",
         "karma-coverage":      "^1.1.1",
