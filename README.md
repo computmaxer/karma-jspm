@@ -25,7 +25,7 @@ Karma auto loads plugins unless you specify a plugins config. If you have one, y
 plugins: ['karma-jspm', 'karma-phantomjs-launcher'],
 ```
 
-The `loadFiles` configuration tells karma-jspm which files should be dynamically loaded via systemjs *before* the tests run. Globs or regular file paths are acceptable. 
+The `loadFiles` configuration tells karma-jspm which files should be dynamically loaded via systemjs *before* the tests run. Globs or regular file paths are acceptable.
 
 
 **You should not include these in the regular karma files array.** karma-jspm takes care of this for you.
@@ -59,7 +59,7 @@ jspm: {
 }
 ```
 
-You may want to make additional files/a file pattern available for jspm to load, but not load it right away. Simply add that to `serveFiles`. 
+You may want to make additional files/a file pattern available for jspm to load, but not load it right away. Simply add that to `serveFiles`.
 One use case for this is to only put test specs in `loadFiles`, and jspm will only load the src files when and if the test files require them. Such a config would look like this:
 
 ```js
@@ -79,7 +79,7 @@ jspm: {
 
 Depending on your framework and project structure it might be necessary to override jspm paths for the testing scenario.
 In order to do so just add the `paths` property to the jspm config object in your karma-configuration file, along with the overrides:
- 
+
 ```js
 jspm: {
     paths: {
@@ -87,7 +87,7 @@ jspm: {
         ...
     }
 }
-``` 
+```
 
 By default the plugin will strip the file extension of the js files. To disable that, specify the `stripExtension` option:
 
@@ -102,5 +102,13 @@ Most of the time, you do not want to cache your entire jspm_packages directory, 
 ```js
 jspm: {
     cachePackages: true
+}
+```
+
+By default, and adapter is provided to launch unit tests. You may provide a custom adapter:
+
+```js
+jspm: {
+    adapter: 'youradapter.js'
 }
 ```

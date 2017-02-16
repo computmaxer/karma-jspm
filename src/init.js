@@ -81,6 +81,10 @@ module.exports = function(files, basePath, jspm, client, emitter) {
         client.jspm.paths = jspm.paths;
     if(jspm.meta !== undefined && typeof jspm.meta === 'object')
         client.jspm.meta = jspm.meta;
+    if(!jspm.adapter)
+        jspm.adapter = __dirname + '/adapter.js';
+    else
+        jspm.adapter = path.normalize(basePath + '/' + jspm.adapter);
 
     // Pass on options to client
     client.jspm.useBundles = jspm.useBundles;
@@ -114,7 +118,7 @@ module.exports = function(files, basePath, jspm, client, emitter) {
         files.unshift(createPattern(browserPath));
     }
 
-    files.unshift(createPattern(__dirname + '/adapter.js'));
+    files.unshift(createPattern(jspm.adapter));
     files.unshift(createPattern(getLoaderPath('system-polyfills.src')));
     files.unshift(createPattern(getLoaderPath('system.src')));
 
