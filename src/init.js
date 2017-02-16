@@ -17,27 +17,32 @@
 var glob = require('glob');
 var path = require('path');
 var fs = require('fs');
-
+var _ = require('lodash');
 
 function flatten(structure) {
     return [].concat.apply([], structure);
 }
 
 function expandGlob(file, cwd) {
-    return glob.sync(file.pattern || file, {cwd: cwd});
+    return glob.sync(file.pattern || file, { cwd: cwd });
 }
 
 var createPattern = function (path) {
-    return {pattern: path, included: true, served: true, watched: false};
+    return {
+        pattern:  path,
+        included: true,
+        served:   true,
+        watched:  false
+    };
 };
 
-var createServedPattern = function(path, file){
+var createServedPattern = function (path, file) {
     return {
-        pattern: path,
+        pattern:  path,
         included: file && 'included' in file ? file.included : false,
-        served: file && 'served' in file ? file.served : true,
-        nocache: file && 'nocache' in file ? file.nocache : false,
-        watched: file && 'watched' in file ? file.watched : true
+        served:   file && 'served' in file ? file.served : true,
+        nocache:  file && 'nocache' in file ? file.nocache : false,
+        watched:  file && 'watched' in file ? file.watched : true
     };
 };
 
@@ -50,37 +55,48 @@ function getJspmPackageJson(dir) {
         pjson = {};
     }
     if (pjson.jspm) {
-        for (var p in pjson.jspm)
+        for (var p in pjson.jspm) {
             pjson[p] = pjson.jspm[p];
+        }
     }
     pjson.directories = pjson.directories || {};
     if (pjson.directories.baseURL) {
-        if (!pjson.directories.packages)
+        if (!pjson.directories.packages) {
             pjson.directories.packages = path.join(pjson.directories.baseURL, 'jspm_packages');
-        if (!pjson.configFile)
+        }
+        if (!pjson.configFile) {
             pjson.configFile = path.join(pjson.directories.baseURL, 'config.js');
+        }
     }
     return pjson;
 }
 
-module.exports = function(files, basePath, jspm, client, emitter) {
+module.exports = function (files, basePath, jspm, reporters, client, emitter) {
     // Initialize jspm config if it wasn't specified in karma.conf.js
-    if(!jspm)
+    if (!jspm) {
         jspm = {};
-    if(!jspm.config)
+    }
+    if (!jspm.config) {
         jspm.config = getJspmPackageJson(basePath).configFile || 'config.js';
-    if(!jspm.loadFiles)
+    }
+    if (!jspm.loadFiles) {
         jspm.loadFiles = [];
-    if(!jspm.serveFiles)
+    }
+    if (!jspm.serveFiles) {
         jspm.serveFiles = [];
-    if(!jspm.packages)
+    }
+    if (!jspm.packages) {
         jspm.packages = getJspmPackageJson(basePath).directories.packages || 'jspm_packages/';
-    if(!client.jspm)
+    }
+    if (!client.jspm) {
         client.jspm = {};
-    if(jspm.paths !== undefined && typeof jspm.paths === 'object')
+    }
+    if (jspm.paths !== undefined && typeof jspm.paths === 'object') {
         client.jspm.paths = jspm.paths;
-    if(jspm.meta !== undefined && typeof jspm.meta === 'object')
+    }
+    if (jspm.meta !== undefined && typeof jspm.meta === 'object') {
         client.jspm.meta = jspm.meta;
+    }
 
     // Pass on options to client
     client.jspm.useBundles = jspm.useBundles;
@@ -89,14 +105,14 @@ module.exports = function(files, basePath, jspm, client, emitter) {
     var packagesPath = path.normalize(basePath + '/' + jspm.packages + '/');
     var browserPath = path.normalize(basePath + '/' + jspm.browser);
     var configFiles = Array.isArray(jspm.config) ? jspm.config : [jspm.config];
-    var configPaths = configFiles.map(function(config) {
+    var configPaths = configFiles.map(function (config) {
         return path.normalize(basePath + '/' + config);
     });
 
     // Add SystemJS loader and jspm config
-    function getLoaderPath(fileName){
+    function getLoaderPath(fileName) {
         var exists = glob.sync(packagesPath + fileName + '@*.js');
-        if(exists && exists.length != 0){
+        if (exists && exists.length != 0) {
             return packagesPath + fileName + '@*.js';
         } else {
             return packagesPath + fileName + '.js';
@@ -104,17 +120,27 @@ module.exports = function(files, basePath, jspm, client, emitter) {
     }
 
     Array.prototype.unshift.apply(files,
-        configPaths.map(function(configPath) {
+        configPaths.map(function (configPath) {
             return createPattern(configPath)
         })
     );
 
     // Needed for JSPM 0.17 beta
-    if(jspm.browser) {
+    if (jspm.browser) {
         files.unshift(createPattern(browserPath));
     }
 
     files.unshift(createPattern(__dirname + '/adapter.js'));
+    if (_.includes(reporters, 'jspm')) {
+        // load istanbul directly in browser to instrument files after inplace transpiling
+        files.unshift(createPattern(require.resolve('istanbul/lib/instrumenter')));
+        // ugly dependency, is build using postinstall script from escodegen dependency
+        files.unshift(createPattern(__dirname + '/../escodegen.js'));
+        // esprima is needed by istanbul
+        files.unshift(createPattern(require.resolve('esprima')));
+        // base64 for older browsers
+        files.unshift(createPattern(require.resolve('Base64')));
+    }
     files.unshift(createPattern(getLoaderPath('system-polyfills.src')));
     files.unshift(createPattern(getLoaderPath('system.src')));
 
@@ -128,19 +154,30 @@ module.exports = function(files, basePath, jspm, client, emitter) {
             return expandGlob(file, basePath);
         }));
     }
+
     addExpandedFiles();
 
     emitter.on('file_list_modified', addExpandedFiles);
 
     // Add served files to files array
-    jspm.serveFiles.map(function(file){
+    jspm.serveFiles.map(function (file) {
         files.push(createServedPattern(basePath + '/' + (file.pattern || file)));
     });
+
+    // store files for coverage
+    if (_.includes(reporters, 'jspm') && _.has(jspm, 'coverage') && _.isArray(jspm.coverage)) {
+        client.jspm.coverage = {};
+        jspm.coverage.map(function (file) {
+            expandGlob(file, basePath).map(function (file) {
+                client.jspm.coverage[file] = true;
+            });
+        });
+    }
 
     // Allow Karma to serve all files within jspm_packages.
     // This allows jspm/SystemJS to load them
     var jspmPattern = createServedPattern(
-        packagesPath + '!(system-polyfills.src.js|system.src.js)/**', {nocache: jspm.cachePackages !== true}
+        packagesPath + '!(system-polyfills.src.js|system.src.js)/**', { nocache: jspm.cachePackages !== true }
     );
     jspmPattern.watched = false;
     files.push(jspmPattern);

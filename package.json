@@ -1,38 +1,48 @@
 {
-  "name": "karma-jspm",
-  "version": "2.2.0",
-  "description": "Include jspm module loader for karma runs; allows dynamic loading of src and test files and modules",
-  "main": "index.js",
-  "keywords": [
-    "karma-plugin",
-    "karma-adapter",
-    "jspm"
-  ],
-  "scripts": {
-    "test": "cross-env JASMINE_CONFIG_PATH=test/jasmine.json jasmine 'test/**/*.spec.js'",
-    "lint": "eslint **/*.js"
-  },
-  "author": {
-    "name": "Max Peterson",
-    "email": "maxwell.peterson@workiva.com"
-  },
-  "contributors": [
-    {
-      "name": "Max Peterson",
-      "email": "computmaxer@gmail.com"
+    "name":            "karma-jspm",
+    "version":         "2.2.0",
+    "description":     "Include jspm module loader for karma runs; allows dynamic loading of src and test files and modules",
+    "main":            "index.js",
+    "keywords":        [
+        "karma-plugin",
+        "karma-adapter",
+        "jspm"
+    ],
+    "scripts":         {
+        "test":        "cross-env JASMINE_CONFIG_PATH=test/jasmine.json jasmine 'test/**/*.spec.js'",
+        "lint":        "eslint **/*.js",
+        "postinstall": "node buildEscodegen.js"
+    },
+    "author":          {
+        "name":  "Max Peterson",
+        "email": "maxwell.peterson@workiva.com"
+    },
+    "contributors":    [
+        {
+            "name":  "Max Peterson",
+            "email": "computmaxer@gmail.com"
+        }
+    ],
+    "license":         "Apache-2.0",
+    "repository":      {
+        "type": "git",
+        "url":  "git@github.com:Workiva/karma-jspm.git"
+    },
+    "dependencies":    {
+        "glob":                "~7.0.5",
+        "istanbul":            "^0.4.3",
+        "Base64":              "^1.0.0",
+        "lodash":              "^4.15.0",
+        "escodegen":           "^1.8.1",
+        "esprima":             "^2.7.3",
+        "commonjs-everywhere": "^0.9.7",
+        "karma-coverage":      "^1.1.1",
+        "minimatch":           "^3.0.0",
+        "remap-istanbul":      "^0.6.4"
+    },
+    "devDependencies": {
+        "cross-env": "^1.0.7",
+        "eslint":    "^2.10.2",
+        "jasmine":   "^2.4.1"
     }
-  ],
-  "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:Workiva/karma-jspm.git"
-  },
-  "dependencies": {
-    "glob": "~7.0.5"
-  },
-  "devDependencies": {
-    "cross-env": "^1.0.7",
-    "eslint": "^2.10.2",
-    "jasmine": "^2.4.1"
-  }
 }
