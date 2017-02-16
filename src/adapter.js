@@ -18,33 +18,50 @@
 /*global Promise*/
 
 (function (karma, System) {
+
+    // Check if System js exists or not
     if (!System) {
         throw new Error('SystemJS was not found. Please make sure you have ' +
             'initialized jspm via installing a dependency with jspm, ' +
             'or by running \'jspm dl-loader\'.');
     }
 
-    System.config({baseURL: 'base'});
-
-    var stripExtension = typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true;
-
-    // Prevent immediately starting tests.
-    karma.loaded = function () {
-
-        if (karma.config.jspm.paths !== undefined &&
-            typeof karma.config.jspm.paths === 'object') {
-
-            System.config({
-                paths: karma.config.jspm.paths
-            });
+    // Override system js configurations
+    var systemJsOverrides = karma.config.jspm.systemJs;
+    for (var key in systemJsOverrides) {
+        if (systemJsOverrides.hasOwnProperty(key)) {
+            System[key] = systemJsOverrides[key];
         }
+    }
 
-        if (karma.config.jspm.meta !== undefined &&
-            typeof karma.config.jspm.meta === 'object') {
-            System.config({
-                meta: karma.config.jspm.meta
-            });
+    // Whats going on here? I've made the experience,
+    // that some other plugins also override the
+    // karma.loaded method, which leads to the
+    // problem, that our "loaded" method get never
+    // called. To prevent this we throw an error
+    // if any other plugin trys to override "loaded";
+    // To be honestly, I have no clue, if overriding
+    // "loaded" is a good idea anyway. Unfortunetely
+    // karma provides no documentation to write own
+    // plugins. They only refer to existing ones.
+    Object.defineProperty(karma, 'loaded', {
+        set: function () {
+
+            if(karma.config.jspm.ignoreOverrideError) return;
+
+            throw new Error('karma.loaded was already overridden by karma-jspm. ' +
+                'karma-jspm is not compatible with other plugins, which also overrides karma.loaded. ' +
+                'You can set "ignoreOverrideError" true in karma.conf.js, if you want to ignore this error.');
+        },
+        get: function () {
+            return loaded
         }
+    });
+
+    /**
+     * Get called, when karma is fully loaded
+     */
+    function loaded() {
 
         // Exclude bundle configurations if useBundles option is not specified
         if (!karma.config.jspm.useBundles) {
@@ -55,10 +72,11 @@
         var promiseChain = Promise.resolve();
         for (var i = 0; i < karma.config.jspm.expandedFiles.length; i++) {
             promiseChain = promiseChain.then((function (moduleName) {
+
                 return function () {
                     return System['import'](moduleName);
                 };
-            })(extractModuleName(karma.config.jspm.expandedFiles[i])));
+            })(removeExtension(karma.config.jspm.expandedFiles[i])));
         }
 
         promiseChain.then(function () {
@@ -66,12 +84,24 @@
         }, function (e) {
             karma.error(e.name + ': ' + e.message);
         });
-    };
+    }
 
-    function extractModuleName(fileName) {
-        if (stripExtension) {
-            return fileName.replace(/\.js$/, '');
-        }
+
+    /**
+     * Removes all file extensions which are defined in extensionsToStrip
+     * @param fileName
+     * @returns {*}
+     */
+    function removeExtension(fileName) {
+      
+      if(typeof karma.config.jspm.stripExtension === 'boolean' ? karma.config.jspm.stripExtension : true)
+
+        (karma.config.jspm.extensionsToStrip || []).forEach(function (extension) {
+
+            fileName = fileName.replace(new RegExp('\\.' + extension + '$'), '')
+        });
+
         return fileName;
     }
+
 })(window.__karma__, window.System);

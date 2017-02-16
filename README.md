@@ -77,23 +77,33 @@ jspm: {
 }
 ```
 
-Depending on your framework and project structure it might be necessary to override jspm paths for the testing scenario.
-In order to do so just add the `paths` property to the jspm config object in your karma-configuration file, along with the overrides:
+Depending on your framework and project structure it might be necessary to override system js configurations. To do so, specify your configurations like this:
  
 ```js
 jspm: {
-    paths: {
-        '*': 'yourpath/*.js',
+    systemJs: {
+        baseURL: 'base/src',
+        paths: {
+          ...
+        },
         ...
     }
 }
 ``` 
 
-By default the plugin will strip the file extension of the js files. To disable that, specify the `stripExtension` option:
+By default the plugin will strip the file extension of the js files. To change that, specify the `extensionsToStrip` option. If you don't want to strip any file extensions pass false;
 
 ```js
 jspm: {
-    stripExtension: false
+    extensionsToStrip: ['ts', 'js']
+}
+```
+
+By default the plugin will throw an error, if another plugin tries to override the `karma.loaded`method. To ignore this error set `ignoreOverrideError` true;
+
+```js
+jspm: {
+    ignoreOverrideError: true
 }
 ```
 
