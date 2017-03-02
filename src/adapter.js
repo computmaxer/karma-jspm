@@ -46,6 +46,12 @@
             });
         }
 
+        if (karma.config.jspm.map !== undefined && typeof karma.config.jspm.map === 'object') {
+            System.config({
+                map: karma.config.jspm.map
+            });
+        }
+
         // Exclude bundle configurations if useBundles option is not specified
         if (!karma.config.jspm.useBundles) {
             System.config({ bundles: [] });
