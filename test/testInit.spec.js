@@ -1,6 +1,7 @@
-/*global describe, expect, it, beforeEach*/
+/*global describe, expect, it, beforeEach, spyOn*/
 
 var cwd = process.cwd();
+var fs = require('fs');
 var path = require('path');
 var initJspm = require('../src/init');
 
@@ -13,6 +14,7 @@ describe('jspm plugin init', function(){
     var basePath = path.resolve(__dirname, '..');
 
     beforeEach(function(){
+        spyOn(fs, 'existsSync').and.returnValue(true);
         files = [];
         jspm = {
             browser: 'custom_browser.js',
@@ -57,10 +59,27 @@ describe('jspm plugin init', function(){
         expect(files[1].included).toEqual(true);
     });
 
+    it('should not add systemjs-polyfills to the top of the files array if it does not exist', function(){
+        fs.existsSync.and.returnValue(false);
+        initJspm(files, basePath, jspm, client, emitter);
+        expect(normalPath(files[1].pattern)).not.toEqual(normalPath(basePath + '/custom_packages/system-polyfills.src.js'));
+        expect(files[1].included).toEqual(true);
+    });
+    
     it('should add systemjs to the top of the files array', function(){
         expect(normalPath(files[0].pattern)).toEqual(normalPath(basePath + '/custom_packages/system.src.js'));
         expect(files[0].included).toEqual(true);
     });
+
+    it('should add files from jspm.beforeFiles to the beginning of the files array', function() {
+        jspm.beforeFiles = ['node_modules/promise-polyfill.js', 'other-polyfill.js'];
+        initJspm(files, basePath, jspm, client, emitter);
+        expect(normalPath(files[0].pattern)).toEqual(normalPath(basePath + '/node_modules/promise-polyfill.js'));
+        expect(files[0].included).toEqual(true);
+        expect(normalPath(files[1].pattern)).toEqual(normalPath(basePath + '/other-polyfill.js'));
+        expect(files[1].included).toEqual(true);
+    });
+
 
     it('should add files from jspm.loadFiles to client.expandedFiles', function(){
         expect(client.jspm.expandedFiles).toEqual(['src/adapter.js', 'src/init.js']);

@@ -69,6 +69,8 @@ module.exports = function(files, basePath, jspm, client, emitter) {
         jspm = {};
     if(!jspm.config)
         jspm.config = getJspmPackageJson(basePath).configFile || 'config.js';
+    if(!jspm.beforeFiles)
+        jspm.beforeFiles = [];
     if(!jspm.loadFiles)
         jspm.loadFiles = [];
     if(!jspm.serveFiles)
@@ -107,7 +109,7 @@ module.exports = function(files, basePath, jspm, client, emitter) {
 
     Array.prototype.unshift.apply(files,
         configPaths.map(function(configPath) {
-            return createPattern(configPath)
+            return createPattern(configPath);
         })
     );
 
@@ -115,10 +117,24 @@ module.exports = function(files, basePath, jspm, client, emitter) {
     if(jspm.browser) {
         files.unshift(createPattern(browserPath));
     }
+    
 
     files.unshift(createPattern(__dirname + '/adapter.js'));
-    files.unshift(createPattern(getLoaderPath('system-polyfills.src')));
+
+    var polyfillsFile = getLoaderPath('system-polyfills.src');
+    if(fs.existsSync(polyfillsFile)) {
+        files.unshift(createPattern(getLoaderPath('system-polyfills.src')));
+    } else {
+        console.warn('No system-polyfills present. If the browser does not support Promises, you may need to load a polyfill with jspm.beforeFiles'); //eslint-disable-line no-console
+    }
+
     files.unshift(createPattern(getLoaderPath('system.src')));
+
+    // Load beforeFiles to the beginning of the files array. Iterate
+    // through the array in reverse to preserve the order
+    jspm.beforeFiles.reverse().forEach(function(file) {
+        files.unshift(createPattern(basePath + '/' + (file.pattern || file)));
+    });
 
     // Loop through all of jspm.load_files and do two things
     // 1. Add all the files as "served" files to the files array
