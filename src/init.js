@@ -129,6 +129,8 @@ module.exports = function(files, basePath, jspm, client, emitter) {
     }
 
     files.unshift(createPattern(getLoaderPath('system.src')));
+    files.unshift(createPattern(getLoaderPath('system-polyfills')));
+    files.unshift(createPattern(getLoaderPath('system')));
 
     // Load beforeFiles to the beginning of the files array. Iterate
     // through the array in reverse to preserve the order
