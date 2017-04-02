@@ -82,7 +82,7 @@ describe('jspm plugin init', function(){
 
 
     it('should add files from jspm.loadFiles to client.expandedFiles', function(){
-        expect(client.jspm.expandedFiles).toEqual(['src/adapter.js', 'src/init.js']);
+        expect(client.jspm.expandedFiles).toEqual([ 'src/adapter.js', 'src/init.js', 'src/preprocessor.js', 'src/reporter.js' ]);
     });
 
     it('should add files from jspm.serveFiles to the files array as served files', function(){
