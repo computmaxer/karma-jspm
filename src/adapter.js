@@ -61,9 +61,7 @@
         var promiseChain = Promise.resolve();
         for (var i = 0; i < karma.config.jspm.expandedFiles.length; i++) {
             promiseChain = promiseChain.then((function (moduleName) {
-                return function () {
-                    return System['import'](moduleName);
-                };
+                return System['import'](moduleName);
             })(extractModuleName(karma.config.jspm.expandedFiles[i])));
         }
 
