@@ -59,6 +59,15 @@ jspm: {
 }
 ```
 
+If you use jspm 0.17 beta >33 and are running tests in a browser without native Promise support (like phantomjs <2.5), you can load a polyfill by adding your file(s) 
+in beforeFiles. For example, install babel-polyfill with `npm install --save-dev babel-polyfill` and then add the line below to the karma config:
+
+```js
+jspm: {
+    beforeFiles: ['node_modules/babel-polyfill/dist/polyfill.js']
+}
+```
+
 You may want to make additional files/a file pattern available for jspm to load, but not load it right away. Simply add that to `serveFiles`. 
 One use case for this is to only put test specs in `loadFiles`, and jspm will only load the src files when and if the test files require them. Such a config would look like this:
 
