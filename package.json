@@ -38,7 +38,7 @@
         "commonjs-everywhere": "^0.9.7",
         "karma-coverage":      "^1.1.1",
         "minimatch":           "^3.0.0",
-        "remap-istanbul":      "^0.6.4"
+        "remap-istanbul":      "^0.11.0"
     },
     "devDependencies": {
         "cross-env": "^1.0.7",
