@@ -54,7 +54,7 @@
 
         if (typeof karma.config.jspm.coverage === 'object' && Instrumenter && btoa) {
             // create instrument with embed source to provide source to remap directly
-            var instrument = new Instrumenter({ embedSource: true });
+            var instrument = new Instrumenter({ embedSource: true, noAutoWrap: true });
             // store original instantiate
             var systemInstantiate = System.instantiate;
             System.instantiate = function (load) {
@@ -67,7 +67,7 @@
                     // inlined-sourceMap to be added to file
                     var sourceMap = '\n' + sourceMapPrefix + btoa(JSON.stringify(load.metadata.sourceMap));
                     load.source = instrument.instrumentSync(
-                        load.source + sourceMap,
+                        load.source + sourceMap + '\n',
                         // make the path-like file key into something that can be used as a name
                         fileKey
                     );
