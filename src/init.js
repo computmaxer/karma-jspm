@@ -141,7 +141,6 @@ module.exports = function (files, basePath, jspm, reporters, client, emitter) {
         // base64 for older browsers
         files.unshift(createPattern(require.resolve('Base64')));
     }
-    files.unshift(createPattern(getLoaderPath('system-polyfills.src')));
     files.unshift(createPattern(getLoaderPath('system.src')));
 
     // Loop through all of jspm.load_files and do two things

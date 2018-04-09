@@ -47,11 +47,6 @@
             });
         }
 
-        // Exclude bundle configurations if useBundles option is not specified
-        if (!karma.config.jspm.useBundles) {
-            System.bundles = [];
-        }
-
         if (typeof karma.config.jspm.coverage === 'object' && Instrumenter && btoa) {
             // create instrument with embed source to provide source to remap directly
             var instrument = new Instrumenter({ embedSource: true, noAutoWrap: true });
