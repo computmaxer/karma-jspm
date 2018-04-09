@@ -121,7 +121,7 @@ module.exports = function (files, basePath, jspm, reporters, client, emitter) {
 
     Array.prototype.unshift.apply(files,
         configPaths.map(function (configPath) {
-            return createPattern(configPath)
+            return createPattern(configPath);
         })
     );
 
